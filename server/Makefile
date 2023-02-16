@@ -9,14 +9,15 @@ CC ?=gcc
 RM = rm -f
 
 NAME = server
-SRCS = $(wildcard *.c) \
+
+SRCS = main.c \
        $(wildcard lib/*.c) \
        $(wildcard src/*.c) \
 
 OBJS = $(SRCS:.c=.o)
 DEPS = $(OBJS:.o=.d)
 
-CFLAGS += -Wall -Wextra -I include -g3
+CFLAGS += -Wall -Wextra -g3 -I ./include
 
 all: $(NAME)
 
