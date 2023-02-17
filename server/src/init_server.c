@@ -1,11 +1,11 @@
 /*
 ** EPITECH PROJECT, 2022
-** Repositery-MyFTP
+** Repository-MyFTP
 ** File description:
 ** init_server.c
 */
 
-#include "../include/server.h"
+#include "server.h"
 
 void create_socket(server_data_t* server_data)
 {

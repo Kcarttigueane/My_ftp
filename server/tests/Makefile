@@ -5,7 +5,7 @@
 ## Makefile
 ##
 
-CC	=	gcc --coverage -g3 -I ../include
+CC	=	gcc
 
 RM	=	rm -f
 
@@ -18,23 +18,19 @@ SRCS	=	$(wildcard *.c) \
 SRCS	:=	$(filter-out ../main.c, $(SRCS))
 
 
-OB	=	$(SRCS:.c=.o)
+OBJS	=	$(SRCS:.c=.o)
 
 
-CFLAGS	=	-Wall -Wextra
-
+CFLAGS	=	--coverage -Wall -Wextra -I ../include
 
 all	:	$(TARGET)
 		./$(TARGET)
 
+$(TARGET)	:	$(OBJS)
+				$(CC) -o $(TARGET) $(OBJS) $(CFLAGS) -lcriterion
 
-$(TARGET)	:	$(OBJ)
-	$(CC) $(CFLAGS) -o $(TARGET) $(OBJ) -lcriterion
-
-
-clean	:
-		$(RM) $(OBJ)
-
+clean:
+	$(RM) $(OBJS)
 
 fclean	:	clean
 			$(RM) $(TARGET)

@@ -6,43 +6,37 @@
 ##
 
 CC ?=gcc
-RM = rm -f
 
-NAME = server
+RM	= rm -f
 
-SRCS = main.c \
-       $(wildcard lib/*.c) \
-       $(wildcard src/*.c) \
+NAME	= server
 
-OBJS = $(SRCS:.c=.o)
-DEPS = $(OBJS:.o=.d)
+SRC	=	$(wildcard *.c)	\
+		$(wildcard lib/*.c) \
+		$(wildcard src/**/*.c) \
+		$(wildcard src/*.c) \
 
-CFLAGS += -Wall -Wextra -g3 -I ./include
 
-all: $(NAME)
+OBJ	= $(SRC:.c=.o)
 
-$(NAME): $(OBJS)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
+CFLAGS	+= -Wall -Wextra -I include -g3
 
--include $(DEPS)
+all:	$(NAME)
 
-%.o: %.c
-	$(CC) $(CFLAGS) -MMD -c $< -o $@
+$(NAME):	$(OBJ)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ)
 
 clean:
-	$(RM) $(OBJS)
-	$(RM) $(DEPS)
-	make -C tests fclean
+	$(RM) $(OBJ)
 
-
-fclean: clean
+fclean:	clean
 	$(RM) $(NAME)
 	$(RM) $(wildcard vgcore*)
+	make -C tests fclean
 
-re: fclean all
+re:	fclean all
 
 tests_run:
 	make -C tests all
-
 
 .PHONY: all clean fclean re tests_run
