@@ -12,6 +12,7 @@
     #include <sys/socket.h>
     #include <sys/types.h>
     #include <sys/un.h>
+    #include <sys/stat.h>
 
     #include <netinet/in.h>
 
@@ -28,6 +29,7 @@
 
     #include <signal.h>
     #include <stdbool.h>
+
 
     // ! Project header files:
 
@@ -55,28 +57,34 @@
 
     // ! CoMMANDSs functions:
 
-    #define handle_error(msg)   \
-        do {                    \
-            perror(msg);        \
-            exit(EXIT_FAILURE); \
+    #define handle_error(msg) \
+        do {                  \
+            perror(msg);      \
+            exit(ERROR);      \
         } while (0)
 
     // ! Structures:
 
     typedef struct server_data {
         int PORT;
-        int server_fd;
-        struct sockaddr_in server_address, client_address;
-        socklen_t client_len;
-        int fd_max, fd_num, str_len;
+        int server_socket_fd;
+        struct sockaddr_in server_address;
+        int fd_max, fd_num, read_input_len;
         struct timeval timeout;
         fd_set fds, copy_fds;
         char buffer[BUFFER_SIZE];
+        size_t nb_clients;
     } server_data_t;
 
     typedef struct client {
-        char cwd_path[1024];
-    } client_data_t;
+        int client_socked_fd;
+        struct sockaddr_in client_address;
+        char username[BUFFER_SIZE];
+        char password[BUFFER_SIZE];
+        bool is_logged;
+        char current_path[BUFFER_SIZE];
+        socklen_t client_len;
+    } client_t;
 
     typedef struct {
         char buffer[BUFFER_SIZE];
@@ -90,6 +98,8 @@
         char *description;
     } command_t;
 
+
+
     // ! Functions prototypes:
 
 void init_server(server_data_t* server_data, char const* argv[]);
@@ -97,9 +107,11 @@ void create_socket(server_data_t* server_data);
 void bind_socket(server_data_t* server_data);
 void listen_socket(server_data_t* server_data);
 
+void is_valid_path(const char* path);
+
 // ! Circular Buffer:
 
-void cb_init(circular_buffer* cb);
+    void cb_init(circular_buffer* cb);
 bool is_cb_full(circular_buffer* cb);
 
 void cb_push(circular_buffer* cb, char* input_command);
@@ -109,7 +121,7 @@ char** cb_pop_command(circular_buffer* cb) ;int find_CRLF_index(
 // FTP:
 
 void parse_command(circular_buffer* cb, server_data_t* server_data, int i);
-void myFTP_loop(server_data_t* server_data);
+void myFTP_loop(server_data_t* server_data, client_t* clients);
 
 void send_resp(int socket_fd, char* msg);
 
@@ -117,6 +129,8 @@ void send_resp(int socket_fd, char* msg);
 
 void sigint_handler(int signal);
 void sigterm_handler(int signal);
+
+bool is_logged(client_t* clients, int i, char** input_command);
 
 extern const command_t COMMANDS_DATA[];
 

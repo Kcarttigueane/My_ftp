@@ -17,7 +17,7 @@ void help_all_commands(int i, char** input_command)
     send_resp(i, FTP_REPLY_214);
 
     if (!input_command[1])
-        help_one_command(input_command);
+        help_one_command(i, input_command);
     else {
         for (int j = 0; j < 14; j++) {
             write(i, COMMANDS[j], strlen(COMMANDS[j]));
