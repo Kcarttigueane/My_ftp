@@ -19,7 +19,7 @@ int main(int argc, char const* argv[])
     // signal(SIGTERM, sigterm_handler);
 
     server_data_t server_data;
-    client_t clients[FD_SETSIZE];
+    client_t clients[FD_SETSIZE] = { 0 };
     memset(clients, 0, sizeof(clients));
 
     init_server(&server_data, argv);

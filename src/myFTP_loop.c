@@ -60,8 +60,8 @@ void file_descriptors_loop(server_data_t* server_data, client_t* clients,
                     printf("Close client: %i\n", i);
                 } else {
                     write(i, server_data->buffer, server_data->read_input_len);
-                    cb_push(&cb, server_data->buffer);
-                    parse_command(&cb, server_data, i);
+                    cb_push(cb, server_data->buffer);
+                    parse_command(cb, server_data, i);
                     printf("Client %i said: %s", i, server_data->buffer);
                 }
             }
@@ -71,7 +71,7 @@ void file_descriptors_loop(server_data_t* server_data, client_t* clients,
 
 void myFTP_loop(server_data_t* server_data, client_t* clients)
 {
-    circular_buffer cb;
+    circular_buffer cb = { 0 };
     cb_init(&cb);
     printf("Server is listening on port %d\n", server_data->server_socket_fd);
     while (true) {

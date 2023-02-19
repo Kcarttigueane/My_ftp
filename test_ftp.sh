@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 if [ "$#" -ne 2 ]; then
     echo "USAGE: $0 host port"
@@ -38,7 +38,7 @@ print_failed()
 print_succeeded()
 {
   echo "$1 test succeeded"
-  echo "OK"  
+  echo "OK"
   kill_client 2>&1 >/dev/null
 }
 
@@ -61,7 +61,7 @@ launch_client()
     echo "Expected reply-code: 220"
     echo "Received : ["`tail -n 1 $OUT |cat -e`"]"
     return 0
-  fi  
+  fi
 }
 
 launch_test()
@@ -92,7 +92,7 @@ kill_client()
   if [ `pidof $nc | wc -l` -ne 0 ]
   then
     killall $nc &>/dev/null
-  fi  
+  fi
   rm -f $PIPE $OUT &> /dev/null
 }
 
@@ -123,5 +123,49 @@ test00()
   return
 }
 
+# HELP command
+test01()
+{
+  local test_name="HELP command"
+
+  local cmd="HELP"
+
+  launch_client $HOST $PORT
+  if [[ ! $? -eq 1 ]]; then
+    echo "KO"
+    kill_client
+    return
+  fi
+
+  launch_test "$test_name" "$cmd" 214
+
+  print_succeeded "$test_name"
+  return
+}
+
+# NOOP command
+test02()
+{
+  local test_name="NOOP command"
+
+  local cmd="NOOP"
+
+  launch_client $HOST $PORT
+  if [[ ! $? -eq 1 ]]; then
+    echo "KO"
+    kill_client
+    return
+  fi
+
+  launch_test "$test_name" "$cmd" 200
+
+  print_succeeded "$test_name"
+  return
+}
+
 test00
+test01
+test02
+test03
+test04
 clean

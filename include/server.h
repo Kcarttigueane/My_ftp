@@ -111,7 +111,7 @@ void is_valid_path(const char* path);
 
 // ! Circular Buffer:
 
-    void cb_init(circular_buffer* cb);
+void cb_init(circular_buffer* cb);
 bool is_cb_full(circular_buffer* cb);
 
 void cb_push(circular_buffer* cb, char* input_command);
@@ -129,8 +129,6 @@ void send_resp(int socket_fd, char* msg);
 
 void sigint_handler(int signal);
 void sigterm_handler(int signal);
-
-bool is_logged(client_t* clients, int i, char** input_command);
 
 extern const command_t COMMANDS_DATA[];
 

@@ -20,6 +20,7 @@ bool is_cb_full(circular_buffer* cb)
 
 void cb_push(circular_buffer* cb, char* input_command)
 {
+    printf("push\n");
     for (size_t i = 0; i < strlen(input_command); i++) {
         if (is_cb_full(cb))
             cb->write_index = 0;

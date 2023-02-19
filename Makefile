@@ -9,7 +9,7 @@ CC ?=gcc
 
 RM	= rm -f
 
-NAME	= server
+NAME	= myftp
 
 SRC	=	$(wildcard *.c)	\
 		$(wildcard lib/*.c) \
