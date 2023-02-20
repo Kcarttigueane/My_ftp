@@ -7,34 +7,31 @@
 
 #include "server.h"
 
-const char COMMANDS[14][5] = {
-    "HELP", "NOOP", "USER", "PASS", "CWD",  "CDUP", "QUIT",
-    "DELE", "PWD",  "PASV", "PORT", "RETR", "STOR", "LIST",
-};
-
-void help_all_commands(int i, char** input_command)
+void help_all_commands(int control_socket, char** input_command)
 {
-    send_resp(i, FTP_REPLY_214);
-
-    if (!input_command[1])
-        help_one_command(i, input_command);
-    else {
-        for (int j = 0; j < 14; j++) {
-            write(i, COMMANDS[j], strlen(COMMANDS[j]));
-            write(i, " ", 1);
-        }
-    }
-
+    char* message = my_strcat(FTP_REPLY_214, COMMANDS);
+    write(control_socket, message, 114);
+    free(message);
 }
 
-void help_one_command(int i, char** input_command)
+void help_one_command(int control_socket, char** input_command)
 {
-    for (int i = 0; i < ARRAY_SIZE(COMMANDS); i++) {
+    for (size_t i = 0; i < ARRAY_SIZE(COMMANDS); i++) {
         if (!strcasecmp(input_command[1], COMMANDS_DATA[i].name)) {
-            printf("%s: %s\n", COMMANDS_DATA[i].name,
-                   COMMANDS_DATA[i].description);
+            char* message = my_strcat(FTP_REPLY_214, COMMANDS_DATA[i].description);
+            write(control_socket, message, 114);
+            free(message);
             return;
         }
     }
-    send_resp(i, FTP_REPLY_500);
+
+    send_resp(control_socket, FTP_REPLY_500);
+}
+
+void help_command(int control_socket, char** input_command)
+{
+    int size = get_size_word_array(input_command);
+
+    (size > 1) ? help_one_command(control_socket, input_command)
+               : help_all_commands(control_socket, input_command);
 }

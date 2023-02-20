@@ -55,4 +55,6 @@ void init_server(server_data_t* server_data, char const* argv[])
     FD_ZERO(&server_data->fds);
     FD_SET(server_data->server_socket_fd, &server_data->fds);
     server_data->fd_max = server_data->server_socket_fd;
+
+    server_data->initial_path = strdup(argv[2]);
 }

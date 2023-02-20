@@ -72,8 +72,8 @@
         int fd_max, fd_num, read_input_len;
         struct timeval timeout;
         fd_set fds, copy_fds;
-        char buffer[BUFFER_SIZE];
         size_t nb_clients;
+        char *initial_path;
     } server_data_t;
 
     typedef struct client {
@@ -82,7 +82,7 @@
         char username[BUFFER_SIZE];
         char password[BUFFER_SIZE];
         bool is_logged;
-        char current_path[BUFFER_SIZE];
+        char *current_path;
         socklen_t client_len;
     } client_t;
 
@@ -97,8 +97,6 @@
         char *name;
         char *description;
     } command_t;
-
-
 
     // ! Functions prototypes:
 
@@ -117,10 +115,13 @@ bool is_cb_full(circular_buffer* cb);
 void cb_push(circular_buffer* cb, char* input_command);
 char** cb_pop_command(circular_buffer* cb) ;int find_CRLF_index(
     circular_buffer* cb);
+void print_cb(circular_buffer* cb);
 
 // FTP:
 
-void parse_command(circular_buffer* cb, server_data_t* server_data, int i);
+void parse_command(circular_buffer* cb, server_data_t* server_data, int i,
+                   client_t* clients);
+
 void myFTP_loop(server_data_t* server_data, client_t* clients);
 
 void send_resp(int socket_fd, char* msg);
@@ -129,6 +130,14 @@ void send_resp(int socket_fd, char* msg);
 
 void sigint_handler(int signal);
 void sigterm_handler(int signal);
+
+
+
+void quit(server_data_t* server_data, int i, char** command);
+
+void pwd(client_t* clients, int control_socket, server_data_t* server_data);
+
+void cwd(int control_socket, char** input_command, client_t* clients);
 
 extern const command_t COMMANDS_DATA[];
 

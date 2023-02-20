@@ -7,7 +7,7 @@
 
 #include "server.h"
 
-void noop(int i)
+void noop(int control_socket)
 {
-    send_resp(i, FTP_REPLY_200);
+    send_resp(control_socket, FTP_REPLY_200);
 }

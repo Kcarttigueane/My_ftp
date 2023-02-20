@@ -5,8 +5,8 @@
 ** color.h
 */
 
-#ifndef BONUS_H
-    #define BONUS_H
+#ifndef COLOR_H
+    #define COLOR_H
 
     #define RED "\033[0;31m"
     #define GREEN "\033[0;32m"
@@ -18,6 +18,6 @@
     #define RESET "\033[0m"
 
     #define SIZE_COLOUR 7
-#define SIZE_RESET 5
+    #define SIZE_RESET 5
 
-#endif /* BONUS_H */
+#endif /* COLOR_H */

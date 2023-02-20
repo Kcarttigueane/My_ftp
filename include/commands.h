@@ -10,14 +10,18 @@
 
 #include "server.h"
 
+    #define COMMANDS \
+        "HELP NOOP USER PASS CWD CDUP QUIT DELE PWD PASV PORT RETR STOR LIST"
+
 // ! HELP :
 
 void help_all_commands(int i, char** input_command);
 void help_one_command(int i, char** input_command);
+void help_command(int control_socket, char** input_command);
 
 // ! PWD:
 
-void pwd();
+// void pwd(client_t *clients, int control_socket);
 
 // ! PASV:
 
@@ -29,7 +33,6 @@ void list();
 
 // ! CWD:
 
-void cwd();
 
 // ! CDUP:
 
@@ -41,7 +44,6 @@ void dele();
 
 // ! QUIT:
 
-void quit(server_data_t* server_data, int i, char** command);
 
 // ! PORT:
 
@@ -57,7 +59,7 @@ void pass();
 
 // ! NOOP:
 
-void noop(int ontrol_socket);
+void noop(int control_socket);
 
 // ! RETR:
 
