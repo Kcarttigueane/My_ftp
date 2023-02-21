@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2022
-** Repositery-MyFTP
+** Repository-MyFTP
 ** File description:
 ** get_size_word_array.c
 */

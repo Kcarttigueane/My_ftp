@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2022
-** Repositery-MyFTP
+** Repository-MyFTP
 ** File description:
 ** reply_codes.h
 */
@@ -35,6 +35,7 @@
 #define FTP_REPLY_225 "225 Data connection open; no transfer in progress.\r\n"
 #define FTP_REPLY_227 "227 Entering Passive Mode (h1,h2,h3,h4,p1,p2).\r\n"
 #define FTP_REPLY_229 "229 Entering Extended Passive Mode (|||port|).\r\n"
+#define FTP_REPLY_232 "232 Login security extension active.\r\n"
 
 // ! Transient Negative:
 

@@ -19,8 +19,8 @@ int main(int argc, char const* argv[])
     // signal(SIGTERM, sigterm_handler);
 
     server_data_t server_data;
-    client_t clients[FD_SETSIZE] = { 0 };
-    memset(clients, 0, sizeof(clients));
+
+    client_t clients[128] = { 0 };
 
     init_server(&server_data, argv);
 
@@ -29,12 +29,3 @@ int main(int argc, char const* argv[])
     close(server_data.server_socket_fd);
     return 0;
 }
-
-// if (strcmp(username, ANONYMOUS_USERNAME) == 0 &&
-//     strcmp(password, ANONYMOUS_PASSWORD) == 0) {
-//     printf("Access granted.\n");
-//     // Accept the connection and proceed with the FTP commands
-// } else {
-//     printf("Access denied.\n");
-//     // Reject the connection and close the socket
-// }

@@ -19,7 +19,7 @@ SRC	=	$(wildcard *.c)	\
 
 OBJ	= $(SRC:.c=.o)
 
-CFLAGS	+= -Wall -Wextra -I include -g3
+CFLAGS	+= -Wall -Wextra -I ./include -g3
 
 all:	$(NAME)
 

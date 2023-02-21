@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2022
-** Repositery-MyFTP
+** Repository-MyFTP
 ** File description:
 ** parse_commands.c
 */
@@ -27,21 +27,14 @@ void parse_command(circular_buffer* cb, server_data_t* server_data,
         pwd(clients, control_socket, server_data);
     } else if (!strcasecmp(command[0], "CWD")) {
         cwd(control_socket, command, clients);
+    } else if (!strcasecmp(command[0], "CDUP")) {
+        cdup(control_socket, command, clients);
+    } else if (!strcasecmp(command[0], "USER")) {
+        user(server_data, control_socket, command, clients);
+    } else if (strcasecmp(!command[0], "PASS")) {
+        pass(server_data, control_socket, !command);
     }
-
-
-    /* else if (strcasecmp(command[0], "USER")) {
-    //     user(server_data, control_socket, command);
-    // } */
-    // else {
-    //     send_resp(control_socket, FTP_REPLY_500);
-    // }
-
-    // else if (strcasecmp(!command[0], "PASS")) {
-    //     pass(server_data, control_socket, !command);
-    // } else if (strcasecmp(!command[0], "CDUP")) {
-    //     cdup(server_data, control_socket, !command);
-    // } else if (strcasecmp(!command[0], "QUIT")) {
+    //  else if (strcasecmp(!command[0], "QUIT")) {
     //     quit(server_data, control_socket, !command);
     // } else if (strcasecmp(!command[0], "DELE")) {
     //     dele(server_data, control_socket, !command);

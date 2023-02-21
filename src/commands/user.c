@@ -1,38 +1,22 @@
 /*
 ** EPITECH PROJECT, 2022
-** Repositery-MyFTP
+** Repository-MyFTP
 ** File description:
 ** user_command.c
 */
 
 #include "server.h"
 
-void user_command()
+void user(server_data_t* server_data, int i, char** command, client_t* clients)
 {
-    printf("USER command\n");
-    // Send USER command to server
-    // char user[1024];
-    // printf("Enter username: ");
-    // fgets(user, 1024, stdin);
-    // user[strcspn(user, "\n")] = 0;  // remove newline character from input
-
-    // char command[1024];
-    // sprintf(command, "USER %s\r\n", user);
-    // send(clientSocket, command, strlen(command), 0);
-
-    // Receive response from server
-    // char response[1024];
-    // recv(clientSocket, response, 1024, 0);
-
-    // // Parse and handle server response
-    // int code = atoi(response);
-    // if (code == 230 || code == 232) {
-    //     printf("User logged in\n");
-    // } else if (code == 331 || code == 332 || code == 336) {
-    //     printf("Username accepted, password required\n");
-    // } else if (code == 421) {
-    //     printf("Service not available, closing control connection\n");
-    // } else if (code == 500 || code == 501 || code == 530) {
-    //     printf("Invalid username or password\n");
-    // }
+    if (get_size_word_array(command) != 2) {
+        write(i, FTP_REPLY_501, strlen(FTP_REPLY_501));
+    } else if (clients[i - 4].is_logged == true) {
+        write(i, FTP_REPLY_530, strlen(FTP_REPLY_530));
+    } else if (!strcmp(command[1], ANONYMOUS_USERNAME)) {
+        write(i, FTP_REPLY_331, strlen(FTP_REPLY_331));
+        strcpy(clients[i - 4].username, ANONYMOUS_USERNAME);
+    } else {
+        write(i, FTP_REPLY_530, strlen(FTP_REPLY_530));
+    }
 }

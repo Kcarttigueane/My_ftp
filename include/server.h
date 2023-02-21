@@ -30,14 +30,6 @@
     #include <signal.h>
     #include <stdbool.h>
 
-
-    // ! Project header files:
-
-    #include "lib.h"
-    #include "reply_codes.h"
-    #include "utils.h"
-    #include "commands.h"
-
     // ! Error Status Codes :
 
     #define ERROR 84
@@ -55,13 +47,14 @@
     \tport is the port number on which the server socket listens\n\
     \tpath is the path to the home directory for the Anonymous user\n"
 
-    // ! CoMMANDSs functions:
+    // ! COMMANDS functions:
 
     #define handle_error(msg) \
         do {                  \
             perror(msg);      \
             exit(ERROR);      \
         } while (0)
+
 
     // ! Structures:
 
@@ -73,7 +66,7 @@
         struct timeval timeout;
         fd_set fds, copy_fds;
         size_t nb_clients;
-        char *initial_path;
+        char* initial_path;
     } server_data_t;
 
     typedef struct client {
@@ -82,21 +75,23 @@
         char username[BUFFER_SIZE];
         char password[BUFFER_SIZE];
         bool is_logged;
-        char *current_path;
+        char* current_path;
         socklen_t client_len;
     } client_t;
 
-    typedef struct {
-        char buffer[BUFFER_SIZE];
-        size_t read_index;
-        size_t write_index;
-    } circular_buffer;
 
-    typedef struct command
-    {
-        char *name;
-        char *description;
+    typedef struct command {
+        char* name;
+        char* description;
     } command_t;
+
+    // ! Project header files:
+
+    #include "lib.h"
+    #include "reply_codes.h"
+    #include "utils.h"
+    #include "commands.h"
+    #include "circular_buffer.h"
 
     // ! Functions prototypes:
 
@@ -104,18 +99,7 @@ void init_server(server_data_t* server_data, char const* argv[]);
 void create_socket(server_data_t* server_data);
 void bind_socket(server_data_t* server_data);
 void listen_socket(server_data_t* server_data);
-
 void is_valid_path(const char* path);
-
-// ! Circular Buffer:
-
-void cb_init(circular_buffer* cb);
-bool is_cb_full(circular_buffer* cb);
-
-void cb_push(circular_buffer* cb, char* input_command);
-char** cb_pop_command(circular_buffer* cb) ;int find_CRLF_index(
-    circular_buffer* cb);
-void print_cb(circular_buffer* cb);
 
 // FTP:
 
@@ -130,14 +114,6 @@ void send_resp(int socket_fd, char* msg);
 
 void sigint_handler(int signal);
 void sigterm_handler(int signal);
-
-
-
-void quit(server_data_t* server_data, int i, char** command);
-
-void pwd(client_t* clients, int control_socket, server_data_t* server_data);
-
-void cwd(int control_socket, char** input_command, client_t* clients);
 
 extern const command_t COMMANDS_DATA[];
 
