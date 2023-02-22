@@ -5,7 +5,7 @@
 ** split_str.c
 */
 
-#include "lib.h"
+#include "../include/lib.h"
 
 size_t count_tokens(const char* str, const char* delimiter)
 {

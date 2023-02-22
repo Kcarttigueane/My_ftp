@@ -5,7 +5,7 @@
 ** cwd.c
 */
 
-#include "../include/server.h"
+#include "../../include/server.h"
 
 void handle_chdir_error(int control_socket, int errno_code)
 {

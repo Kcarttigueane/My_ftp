@@ -7,7 +7,7 @@
 
 #include <criterion/criterion.h>
 #include <criterion/redirect.h>
-#include "lib.h"
+#include "../include/lib.h"
 
 Test(count_tokens_function, basic) {
     const char* str = "hello world";

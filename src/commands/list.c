@@ -5,7 +5,7 @@
 ** list.c
 */
 
-#include "server.h"
+#include "../../include/server.h"
 
 void list(void)
 {
