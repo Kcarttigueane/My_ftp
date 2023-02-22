@@ -18,6 +18,11 @@
         "system_error": "c",
         "circular_buffer.h": "c",
         "socket.h": "c",
-        "sstream": "c"
+        "sstream": "c",
+        "in.h": "c",
+        "utils.h": "c",
+        "unistd.h": "c",
+        "redirect.h": "c",
+        "color.h": "c"
     }
 }

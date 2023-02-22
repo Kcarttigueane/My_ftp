@@ -5,13 +5,14 @@
 ** commands.h
 */
 
-#if !defined(COMMAND_H)
-    #define COMMAND_H
+#pragma once
 
     #include "server.h"
+    #include "circular_buffer.h"
 
     #define COMMANDS \
-        "HELP NOOP USER PASS CWD CDUP QUIT DELE PWD PASV PORT RETR STOR LIST"
+        "HELP NOOP USER PASS CWD CDUP QUIT DELE PWD \
+        PASV PORT RETR STOR LIST\r\n"
 
 // ! HELP :
 
@@ -25,13 +26,16 @@ void pwd(client_t* clients, int control_socket, server_data_t* server_data);
 
 // ! PASV:
 
-void pasv();
+void pasv(circular_buffer* cb, server_data_t* server_data, int control_socket,
+client_t* clients);
 
 // ! LIST:
 
-void list();
+void list(void);
 
 // ! CWD:
+
+void cwd_command(int control_socket, char** input_command, client_t* clients);
 
 // ! CDUP:
 
@@ -39,7 +43,7 @@ void cdup(int control_socket, char** input_command, client_t* clients);
 
 // ! DELE:
 
-void dele();
+void dele(int control_socket, char** input_command);
 
 // ! QUIT:
 
@@ -47,7 +51,7 @@ void quit(server_data_t* server_data, int i, char** command);
 
 // ! PORT:
 
-void port();
+void port(void);
 
 // ! USER:
 
@@ -63,10 +67,8 @@ void noop(int control_socket);
 
 // ! RETR:
 
-void retr();
+void retr(void);
 
 // ! STOR:
 
-void stor();
-
-#endif  // COMMAND_H
+void stor(void);

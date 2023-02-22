@@ -5,20 +5,19 @@
 ** debug_command.c
 */
 
-#include "../include/lib.h"
 #include <unistd.h>
 #include "../include/color.h"
+#include "../include/server.h"
 
-void debug_command(char *buffer)
+void debug_command(char* buffer)
 {
     for (size_t i = 0; i < (strlen(buffer) - 1); i++) {
-        if (buffer[i] == '\r' && buffer[i+1] == '\n') {
+        if (buffer[i] == CARRIAGE_RETURN && buffer[i + 1] == LINE_FEED) {
             write(0, GREEN, SIZE_COLOUR);
             write(0, "CRLF\n", 5);
             write(0, RESET, SIZE_RESET);
             i++;
-        }
-        else {
+        } else {
             write(0, &buffer[i], 1);
         }
     }

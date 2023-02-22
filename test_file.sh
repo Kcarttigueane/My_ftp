@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ "$#" -ne 2 ]; then
-    echo "USAGE: $0 host port"
+    echo -e "\e[31mUSAGE: $0 host port\e[0m"
     exit 0
 fi
 
@@ -22,23 +22,23 @@ getcode()
 {
   sleep $TIMEOUT
   local code=$1
-  echo "Waiting for $code reply-code"
+  echo -e "\e[34mWaiting for $code reply-code\e[0m"
   local data=`$TAIL -n 1 $OUT |cat -e |grep "^$code.*[$]$" |wc -l`
   return $data
 }
 
 print_failed()
 {
-    echo "$1 test failed"
-    echo "Expected reply-code: $2"
-    echo "Received : ["`$TAIL -n 1 $OUT| cat -e`"]"
-    echo "KO"
+    echo -e "\e[31m$1 test failed\e[0m"
+    echo -e "Expected reply-code: \e[33m$2\e[0m"
+    echo -e "Received : [\e[32m"`$TAIL -n 1 $OUT| cat -e`"\e[0m]"
+    echo -e "\e[31mKO\e[0m"
 }
 
 print_succeeded()
 {
-  echo "$1 test succeeded"
-  echo "OK"
+  echo -e "\e[32m$1 test succeeded\e[0m"
+  echo -e "\e[32mOK\e[0m"
   kill_client 2>&1 >/dev/null
 }
 
@@ -50,16 +50,16 @@ launch_client()
   $MKFIFO $PIPE
   ($TAIL -f $PIPE 2>/dev/null | $NC $host $port &> $OUT &) >/dev/null 2>/dev/null
 
-  echo "Connecting to $host : $port"
+  echo -e "\e[34mConnecting to $host : $port\e[0m"
   sleep $TIMEOUT
   getcode 220
   if [[ $? -eq 1 ]]; then
-    echo "Reply-code OK"
+    echo -e "\e[32mReply-code OK\e[0m"
     return 1
   else
-    echo "Connection to $host:$port failed"
-    echo "Expected reply-code: 220"
-    echo "Received : ["`tail -n 1 $OUT |cat -e`"]"
+    echo -e "\e[31mConnection to $host:$port failed\e[0m"
+    echo -e "Expected reply-code: \e[33m220\e[0m"
+    echo -e "Received : [\e[32m"`tail -n 1 $OUT |cat -e`"\e[0m]"
     return 0
   fi
 }
@@ -70,7 +70,7 @@ launch_test()
   local cmd=$2
   local code=$3
 
-  echo "Sending [$cmd^M$]"
+  echo -e "\e[34mSending [$cmd^M$]\e[0m"
   echo "$cmd" >$PIPE
   getcode $code
   if [[ ! $? -eq 1 ]]; then
@@ -78,7 +78,7 @@ launch_test()
     kill_client
     clean
   fi
-  echo "Reply-code OK"
+  echo -e "\e[32mReply-code OK\e[0m"
 }
 
 kill_client()
@@ -102,7 +102,7 @@ clean()
 }
 
 # Simple authentication with USER + PASS command
-test00()
+test_authentification_simple()
 {
   local test_name="Authentication"
 
@@ -123,30 +123,62 @@ test00()
   return
 }
 
-# HELP command
-test01()
+# ! HELP command no arguments
+test_help_no_arguments()
 {
-  local test_name="HELP command"
+  local test_name="[HELP command No arguments]"
 
   local cmd="HELP"
 
   launch_client $HOST $PORT
+
   if [[ ! $? -eq 1 ]]; then
     echo "KO"
     kill_client
     return
   fi
 
+  echo -e "------------------ HELP ---------------------"
+
   launch_test "$test_name" "$cmd" 214
 
   print_succeeded "$test_name"
+
+  echo -e "---------------------------------------------"
+
   return
 }
 
-# NOOP command
-test02()
+# ! HELP command with arguments
+test_help_arguments()
 {
-  local test_name="NOOP command"
+  local test_name="[HELP command with argument]"
+
+  local cmd="HELP USER"
+
+  launch_client $HOST $PORT
+
+  if [[ ! $? -eq 1 ]]; then
+    echo "KO"
+    kill_client
+    return
+  fi
+
+  echo -e "--------------- HELP arguments ---------------"
+
+  launch_test "$test_name" "$cmd" 214
+
+  print_succeeded "$test_name"
+
+  echo -e "---------------------------------------------"
+
+  return
+}
+
+# ! NOOP command
+test_noop()
+{
+  local test_name="[NOOP command]"
 
   local cmd="NOOP"
 
@@ -157,15 +189,22 @@ test02()
     return
   fi
 
+  echo -e "------------------ NOOP ---------------------"
+
   launch_test "$test_name" "$cmd" 200
+
+  echo -e "---------------------------------------------"
+
 
   print_succeeded "$test_name"
   return
 }
 
-test00
-test01
-test02
-test03
-test04
+test_authentification_simple
+test_help_no_arguments
+test_help_arguments
+test_noop
+
 clean
+
+

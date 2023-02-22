@@ -5,7 +5,7 @@
 ** cb_is_full.c
 */
 
-#include "../../include/circular_buffer.h"
+#include "../../include/server.h"
 
 bool is_cb_full(circular_buffer* cb)
 {

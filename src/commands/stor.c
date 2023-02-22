@@ -1,13 +1,13 @@
 /*
 ** EPITECH PROJECT, 2022
-** Repositery-MyFTP
+** Repository-MyFTP
 ** File description:
 ** store.c
 */
 
-#include "server.h"
+#include "../../include/server.h"
 
-void store()
+void stor(void)
 {
     printf("STORE\n");
 }

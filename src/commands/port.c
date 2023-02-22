@@ -1,13 +1,13 @@
 /*
 ** EPITECH PROJECT, 2022
-** Repositery-MyFTP
+** Repository-MyFTP
 ** File description:
 ** port.c
 */
 
-#include "server.h"
+#include "../../include/server.h"
 
-void port()
+void port(void)
 {
     printf("PORT\n");
 }

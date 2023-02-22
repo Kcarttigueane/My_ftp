@@ -42,6 +42,11 @@
     #define ANONYMOUS_USERNAME "Anonymous"
     #define ANONYMOUS_PASSWORD ""
 
+    #define CRLF "\r\n"
+
+    #define CARRIAGE_RETURN '\r'
+    #define LINE_FEED '\n'
+
     #define SERVER_USAGE \
         "USAGE: ./myftp port path\n\
     \tport is the port number on which the server socket listens\n\
@@ -61,12 +66,15 @@
     typedef struct server_data {
         int PORT;
         int server_socket_fd;
-        struct sockaddr_in server_address;
+        struct sockaddr_in server_address, data_address;
         int fd_max, fd_num, read_input_len;
         struct timeval timeout;
         fd_set fds, copy_fds;
         size_t nb_clients;
         char* initial_path;
+
+        int data_socket_fd;
+        socklen_t data_len;
     } server_data_t;
 
     typedef struct client {
@@ -101,16 +109,21 @@ void bind_socket(server_data_t* server_data);
 void listen_socket(server_data_t* server_data);
 void is_valid_path(const char* path);
 
-// FTP:
+// ! FTP:
 
 void parse_command(circular_buffer* cb, server_data_t* server_data, int i,
-                   client_t* clients);
+client_t* clients);
 
 void myFTP_loop(server_data_t* server_data, client_t* clients);
 
 void send_resp(int socket_fd, char* msg);
 
-// ! Signal handlers:
+void handle_new_client_connection(server_data_t* server_data,
+client_t* clients);
+
+void accept_new_client(server_data_t* server_data, client_t* clients);
+
+    // ! Signal handlers:
 
 void sigint_handler(int signal);
 void sigterm_handler(int signal);
@@ -118,4 +131,3 @@ void sigterm_handler(int signal);
 extern const command_t COMMANDS_DATA[];
 
 #endif // SERVER_H
-

@@ -28,11 +28,10 @@ char** split_str(char* str, char* delimiter)
 {
     size_t token_count = 0;
     if (str == NULL || (token_count = count_tokens(str, delimiter)) == 0 ||
-        delimiter == NULL)
+    delimiter == NULL)
         return NULL;
 
     char* str_cpy = strdup(str);
-
     if (str_cpy == NULL)
         return NULL;
 

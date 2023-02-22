@@ -23,6 +23,6 @@ bool is_cb_full(circular_buffer* cb);
 
 void cb_push(circular_buffer* cb, char* input_command);
 char** cb_pop_command(circular_buffer* cb);
-int find_CRLF_index(circular_buffer* cb);
+int find_crlf_index(circular_buffer* cb);
 
 #endif // CIRCULAR_BUFFER_H

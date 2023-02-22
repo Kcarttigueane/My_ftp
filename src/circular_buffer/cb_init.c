@@ -5,7 +5,7 @@
 ** cb_init.c
 */
 
-#include "../../include/circular_buffer.h"
+#include "../../include/server.h"
 
 void cb_init(circular_buffer* cb)
 {

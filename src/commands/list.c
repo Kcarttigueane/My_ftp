@@ -1,13 +1,13 @@
 /*
 ** EPITECH PROJECT, 2022
-** Repositery-MyFTP
+** Repository-MyFTP
 ** File description:
 ** list.c
 */
 
 #include "server.h"
 
-void list()
+void list(void)
 {
     printf("LIST\n");
 }

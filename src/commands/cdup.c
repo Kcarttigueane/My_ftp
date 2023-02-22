@@ -35,6 +35,6 @@ void cdup(int control_socket, char** input_command, client_t* clients)
     } else {
         send_resp(control_socket, FTP_REPLY_200);
         clients[control_socket - 4].current_path =
-            get_current_path(control_socket, clients);
+        get_current_path(control_socket, clients);
     }
 }

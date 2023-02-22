@@ -5,7 +5,7 @@
 ** pwd.c
 */
 
-#include "server.h"
+#include "../../include/server.h"
 
 void pwd(client_t* clients, int control_socket, server_data_t* server_data)
 {
@@ -14,10 +14,10 @@ void pwd(client_t* clients, int control_socket, server_data_t* server_data)
 
     if (path_len >= BUFFER_SIZE - 30) {
         send_resp(control_socket,
-                  "550 Current working directory path is too long\r\n");
+        "550 Current working directory path is too long\r\n");
     } else {
         sprintf(msg, "257 \"%s\" is the current working directory.\r\n",
-                clients[control_socket - 4].current_path);
+        clients[control_socket - 4].current_path);
         send_resp(control_socket, msg);
     }
 }

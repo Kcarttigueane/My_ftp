@@ -17,6 +17,8 @@ char** split_str(char* str, char* delimiter);
 int get_size_word_array(char** array);
 char* my_strcat(char* s1, char* s2);
 
+void free_word_array(char** map);
+
 // ! DEBUG functions:
 
 void debug_word_array(char** word_array);

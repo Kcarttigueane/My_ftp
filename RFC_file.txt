@@ -27,7 +27,7 @@ The following are the mandatory FTP commands from client to server:
 
             NOOP <CRLF>                   : Do nothing
 
-            (the following are commands using data transfer )
+            (the following are commands using // data transfer // )
 
             RETR <SP> <pathname> <CRLF>   : Download file from server to client
             STOR <SP> <pathname> <CRLF>   : Upload file from client to server

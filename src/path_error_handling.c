@@ -5,7 +5,7 @@
 ** path_error_handling.c
 */
 
-#include "server.h"
+#include "../include/server.h"
 
 void is_valid_path(const char *path)
 {
@@ -31,9 +31,8 @@ void is_valid_path(const char *path)
     }
 
     // Limit the access of the server to the directory
-    // if (chroot(path) == FAILURE) {
-
-    //     fprintf(stderr, "Failed to limit server access to %s\n", path);
-    //     return 0;
+    // if (chroot(path) != 0) {
+    //     sprintf(msg, "Failed to limit server access to %s", path);
+    //     handle_error(msg);
     // }
 }

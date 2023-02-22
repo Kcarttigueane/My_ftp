@@ -1,13 +1,13 @@
 /*
 ** EPITECH PROJECT, 2022
-** Repositery-MyFTP
+** Repository-MyFTP
 ** File description:
 ** retr.c
 */
 
-#include "server.h"
+#include "../../include/server.h"
 
-void retr()
+void retr(void)
 {
     printf("RETR\n");
 }
