@@ -48,20 +48,19 @@ char* copy_chars(circular_buffer* cb, size_t nb_char_to_copy)
 char** cb_pop_command(circular_buffer* cb)
 {
     int CRLF_index = find_crlf_index(cb);
-
     if (CRLF_index == FAILURE)
         return NULL;
-
     size_t nb_char_to_copy = get_nb_char_to_copy(cb, CRLF_index);
-
     if (nb_char_to_copy == 0)
         return NULL;
-
     char* command = copy_chars(cb, nb_char_to_copy);
     if (!command)
         return NULL;
 
-    cb->read_index += 2;
+    cb->read_index = ((cb->read_index + 2) == BUFFER_SIZE) ? 0
+    : ((cb->read_index + 2) > BUFFER_SIZE)
+    ? (cb->read_index + 2) - BUFFER_SIZE
+    : (cb->read_index + 2);
 
     char** command_array = split_str(command, " ");
     if (!command_array)

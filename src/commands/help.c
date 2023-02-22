@@ -10,14 +10,13 @@
 void help_all_commands(int control_socket, char** input_command)
 {
     char* message = my_strcat(FTP_REPLY_214, COMMANDS);
-    printf("message = %s\n", message);
     write(control_socket, message, strlen(message));
     free(message);
 }
 
 void help_one_command(int control_socket, char** input_command)
 {
-    for (size_t i = 0; i < ARRAY_SIZE(COMMANDS); i++) {
+    for (size_t i = 0; i < get_size_word_array(input_command); i++) {
         if (!strcasecmp(input_command[1], COMMANDS_DATA[i].name)) {
             char* message =
                 my_strcat(FTP_REPLY_214, COMMANDS_DATA[i].description);
