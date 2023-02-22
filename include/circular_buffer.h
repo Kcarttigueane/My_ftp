@@ -16,13 +16,24 @@
         size_t write_index;
     } circular_buffer;
 
-// ! Circular Buffer:
+// ! Init:
 
 void cb_init(circular_buffer* cb);
+
+// ! Check:
+
 bool is_cb_full(circular_buffer* cb);
 
+// ! Push:
+
 void cb_push(circular_buffer* cb, char* input_command);
-char** cb_pop_command(circular_buffer* cb);
+
+// ! Pop:
+
 int find_crlf_index(circular_buffer* cb);
+char* copy_chars(circular_buffer* cb, size_t nb_char_to_copy);
+size_t get_nb_char_to_copy(circular_buffer* cb, int CRLF_index);
+char** cb_pop_command(circular_buffer* cb);
+
 
 #endif // CIRCULAR_BUFFER_H

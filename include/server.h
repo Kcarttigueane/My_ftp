@@ -109,7 +109,7 @@ void bind_socket(server_data_t* server_data);
 void listen_socket(server_data_t* server_data);
 void is_valid_path(const char* path);
 
-// ! FTP:
+    // ! FTP:
 
 void parse_command(circular_buffer* cb, server_data_t* server_data, int i,
 client_t* clients);

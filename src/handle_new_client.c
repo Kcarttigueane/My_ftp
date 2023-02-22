@@ -35,8 +35,9 @@ void handle_new_client_connection(server_data_t* server_data, client_t* clients)
     }
     clients[server_data->nb_clients].current_path =
         strdup(server_data->initial_path);
-    strcpy(clients[server_data->nb_clients].username, ANONYMOUS_USERNAME);
-    strcpy(clients[server_data->nb_clients].password, ANONYMOUS_PASSWORD);
+
+    memset(clients[server_data->nb_clients].username, 0, BUFFER_SIZE);
+    memset(clients[server_data->nb_clients].password, 0, BUFFER_SIZE);
     clients[server_data->nb_clients].is_logged = false;
     server_data->nb_clients++;
 }
