@@ -8,7 +8,7 @@
 #include "../include/server.h"
 
 void read_input(int i, server_data_t* server_data, circular_buffer* cb,
-                client_t* clients)
+client_t* clients)
 {
     char buffer[BUFFER_SIZE] = {0};
     server_data->read_input_len = read(i, buffer, BUFFER_SIZE);
@@ -25,7 +25,7 @@ void read_input(int i, server_data_t* server_data, circular_buffer* cb,
 }
 
 void file_descriptors_loop(server_data_t* server_data, client_t* clients,
-                           circular_buffer* cb)
+circular_buffer* cb)
 {
     for (int i = 0; i < (server_data->fd_max + 1); i++) {
         if (FD_ISSET(i, &server_data->copy_fds)) {
@@ -36,7 +36,7 @@ void file_descriptors_loop(server_data_t* server_data, client_t* clients,
     }
 }
 
-void myFTP_loop(server_data_t* server_data, client_t* clients)
+void my_ftp_loop(server_data_t* server_data, client_t* clients)
 {
     circular_buffer cb = {0};
 
@@ -47,8 +47,8 @@ void myFTP_loop(server_data_t* server_data, client_t* clients)
         server_data->copy_fds = server_data->fds;
 
         if ((server_data->fd_num =
-                 select(server_data->fd_max + 1, &server_data->copy_fds, 0, 0,
-                        &server_data->timeout)) == FAILURE) {
+        select(server_data->fd_max + 1, &server_data->copy_fds, 0, 0,
+        &server_data->timeout)) == FAILURE) {
             break;
         }
         if (server_data->fd_num == STDIN_FILENO)

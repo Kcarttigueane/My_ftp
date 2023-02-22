@@ -114,7 +114,7 @@ void is_valid_path(const char* path);
 void parse_command(circular_buffer* cb, server_data_t* server_data, int i,
 client_t* clients);
 
-void myFTP_loop(server_data_t* server_data, client_t* clients);
+void my_ftp_loop(server_data_t* server_data, client_t* clients);
 
 void send_resp(int socket_fd, char* msg);
 

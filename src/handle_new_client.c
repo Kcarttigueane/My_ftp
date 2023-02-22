@@ -26,12 +26,10 @@ void handle_new_client_connection(server_data_t* server_data, client_t* clients)
 
     send_resp(clients[server_data->nb_clients].client_socked_fd, FTP_REPLY_220);
 
-    FD_SET(
-        clients[server_data->nb_clients].client_socked_fd,
-        &server_data
-             ->fds);  // adds the client file descriptor clients[server_data->nb_clients].client_socked_fd to the set of monitored file descriptors server_data->fds
+    FD_SET(clients[server_data->nb_clients].client_socked_fd,
+    &server_data->fds);
 
-    if (server_data->fd_max <\
+    if (server_data->fd_max <
         clients[server_data->nb_clients].client_socked_fd) {
         server_data->fd_max = clients[server_data->nb_clients].client_socked_fd;
     }

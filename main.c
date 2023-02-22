@@ -24,7 +24,7 @@ int main(int argc, char const* argv[])
 
     init_server(&server_data, argv);
 
-    myFTP_loop(&server_data, clients);
+    my_ftp_loop(&server_data, clients);
 
     close(server_data.server_socket_fd);
     return 0;
