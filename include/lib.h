@@ -14,7 +14,7 @@
 size_t count_tokens(const char* str, const char* delimiter);
 char** split_str(char* str, char* delimiter);
 
-int get_size_word_array(char** array);
+size_t get_size_word_array(char** array);
 char* my_strcat(char* s1, char* s2);
 
 void free_word_array(char** map);

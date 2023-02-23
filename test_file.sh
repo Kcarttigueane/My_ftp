@@ -304,12 +304,40 @@ test_noop()
     return
 }
 
+# ! PWD command
+test_pwd()
+{
+    local test_name="PWD command"
+
+    local cmd1="USER $USERNAME"
+    local cmd2="PASS $PASS"
+    local cmd3="PWD"
+
+    launch_client $HOST $PORT
+    if [[ ! $? -eq 1 ]]; then
+        echo "KO"
+        kill_client
+        return
+    fi
+
+    launch_test "$test_name" "$cmd1" 331
+    launch_test "$test_name" "$cmd2" 230
+    launch_test "$test_name" "$cmd3" 257
+
+    print_succeeded "$test_name"
+    return
+}
+
+
+
 # test_authentification_simple
 # test_authentification_invalid_password
 # test_authentification_no_credentials
 # test_authentification_username_only
 # test_authentification_password_only
-test_authentification_multiple_usernames
+# test_authentification_multiple_usernames
+
+# test_pwd
 
 test_help_no_arguments
 test_help_arguments

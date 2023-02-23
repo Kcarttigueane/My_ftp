@@ -7,7 +7,7 @@
 
 #include "../../include/server.h"
 
-void quit(server_data_t* server_data, int i, char** command)
+void quit(__attribute_maybe_unused__ int control_socket, ...)
 {
     printf("QUIT\n");
 }

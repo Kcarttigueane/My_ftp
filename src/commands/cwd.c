@@ -22,8 +22,13 @@ void handle_chdir_error(int control_socket, int errno_code)
     }
 }
 
-void cwd_command(int control_socket, char** input_command, client_t* clients)
+void cwd_command(int control_socket, ...)
 {
+    va_list args;
+    va_start(args, control_socket);
+    client_t* clients = get_nth_argument(1, args);
+    char** input_command = get_nth_argument(2, args);
+
     if (chdir(input_command[1]) < 0) {
         handle_chdir_error(control_socket, errno);
     } else {
@@ -31,4 +36,6 @@ void cwd_command(int control_socket, char** input_command, client_t* clients)
         clients[control_socket - 4].current_path = strdup(input_command[1]);
         send_resp(control_socket, "250 Directory successfully changed\r\n");
     }
+
+    va_end(args);
 }

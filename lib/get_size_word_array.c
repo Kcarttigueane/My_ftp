@@ -7,7 +7,7 @@
 
 #include "../include/lib.h"
 
-int get_size_word_array(char **array)
+size_t get_size_word_array(char **array)
 {
     int i = 0;
 

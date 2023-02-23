@@ -8,18 +8,20 @@
 #include "../../include/server.h"
 
 const command_t COMMANDS_DATA[] = {
-    {"HELP", "List available commands\r\n"},
-    {"NOOP", "Do nothing\r\n"},
-    {"USER", "Specify user for authentication\r\n"},
-    {"PASS", "Specify password for authentication\r\n"},
-    {"CWD", "Change working directory\r\n"},
-    {"CDUP", "Change working directory to parent directory\r\n"},
-    {"QUIT", "Disconnection\r\n"},
-    {"DELE", "Delete file on the server\r\n"},
-    {"PWD", "Print working directory\r\n"},
-    {"PASV", "Enable \"passive\" mode for data transfer\r\n"},
-    {"PORT", "Enable \"active\" mode for data transfer\r\n"},
-    {"RETR", "Download file from the server to the client\r\n"},
-    {"STOR", "Upload file from the client to the server\r\n"},
-    {"LIST", "List files in the current working directory\r\n"},
+    {"HELP", "List available commands\r\n", help_command},
+    {"NOOP", "Do nothing\r\n", noop},
+    {"USER", "Specify user for authentication\r\n", user},
+    {"PASS", "Specify password for authentication\r\n", pass},
+    {"CWD", "Change working directory\r\n", cwd_command},
+    {"CDUP", "Change working directory to parent directory\r\n", cdup},
+    {"QUIT", "Disconnection\r\n", NULL},
+    {"DELE", "Delete file on the server\r\n", dele},
+    {"PWD", "Print working directory\r\n", pwd},
+    {"PASV", "Enable \"passive\" mode for data transfer\r\n", NULL},
+    {"PORT", "Enable \"active\" mode for data transfer\r\n", NULL},
+    {"RETR", "Download file from the server to the client\r\n", NULL},
+    {"STOR", "Upload file from the client to the server\r\n", NULL},
+    {"LIST", "List files in the current working directory\r\n", NULL},
 };
+
+const size_t COMMANDS_DATA_SIZE = ARRAY_SIZE(COMMANDS_DATA);

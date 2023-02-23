@@ -30,6 +30,8 @@
     #include <signal.h>
     #include <stdbool.h>
 
+    #include <stdarg.h>
+
     // ! Error Status Codes :
 
     #define ERROR 84
@@ -87,11 +89,18 @@
         socklen_t client_len;
     } client_t;
 
+    typedef void (*command_func_t)(int, ...);
 
     typedef struct command {
         char* name;
         char* description;
+        command_func_t func;
     } command_t;
+
+    typedef struct {
+        const char* name;
+        const char* description;
+    } command_data_t;
 
     // ! Project header files:
 
@@ -109,10 +118,13 @@ void bind_socket(server_data_t* server_data);
 void listen_socket(server_data_t* server_data);
 void is_valid_path(const char* path);
 
-    // ! FTP:
+
+    // ! Parsing commands:
 
 void parse_command(circular_buffer* cb, server_data_t* server_data, int i,
 client_t* clients);
+
+    // ! FTP:
 
 void my_ftp_loop(server_data_t* server_data, client_t* clients);
 
@@ -128,6 +140,9 @@ void accept_new_client(server_data_t* server_data, client_t* clients);
 void sigint_handler(int signal);
 void sigterm_handler(int signal);
 
+void* get_nth_argument(int n, va_list args);
+
 extern const command_t COMMANDS_DATA[];
+extern const size_t COMMANDS_DATA_SIZE;
 
 #endif // SERVER_H

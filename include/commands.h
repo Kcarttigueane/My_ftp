@@ -16,18 +16,18 @@
 
 // ! HELP :
 
-void help_all_commands(int i, char** input_command);
-void help_one_command(int i, char** input_command);
-void help_command(int control_socket, char** input_command);
+void help_all_commands(int control_socket);
+void help_one_command(int control_socket, char ** input_commands);
+void help_command(int control_socket, ...);
 
 // ! PWD:
 
-void pwd(client_t* clients, int control_socket, server_data_t* server_data);
+void pwd(int control_socket, ...);
 
 // ! PASV:
 
-void pasv(circular_buffer* cb, server_data_t* server_data, int control_socket,
-client_t* clients);
+void pasv(circular_buffer* cb, server_data_t* server_data,
+int control_socket, client_t* clients);
 
 // ! LIST:
 
@@ -35,19 +35,19 @@ void list(void);
 
 // ! CWD:
 
-void cwd_command(int control_socket, char** input_command, client_t* clients);
+void cwd_command(int control_socket, ...);
 
 // ! CDUP:
 
-void cdup(int control_socket, char** input_command, client_t* clients);
+void cdup(int control_socket, ...);
 
 // ! DELE:
 
-void dele(int control_socket, char** input_command);
+void dele(int control_socket, ...);
 
 // ! QUIT:
 
-void quit(server_data_t* server_data, int i, char** command);
+void quit(int control_socket, ...);
 
 // ! PORT:
 
@@ -55,15 +55,15 @@ void port(void);
 
 // ! USER:
 
-void user(server_data_t* server_data, int i, char** command, client_t* clients);
+void user(int control_socket, ...);
 
 // ! PASS:
 
-void pass(server_data_t* server_data, int i, char** command, client_t* clients);
+void pass(int control_socket, ...);
 
 // ! NOOP:
 
-void noop(int control_socket);
+void noop(int control_socket, ...);
 
 // ! RETR:
 

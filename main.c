@@ -15,9 +15,6 @@ int main(int argc, char const* argv[])
     }
     is_valid_path(argv[2]);
 
-    // signal(SIGINT, sigint_handler);
-    // signal(SIGTERM, sigterm_handler);
-
     server_data_t server_data;
 
     client_t clients[128] = { 0 };

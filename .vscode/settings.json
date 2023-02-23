@@ -23,6 +23,8 @@
         "utils.h": "c",
         "unistd.h": "c",
         "redirect.h": "c",
-        "color.h": "c"
+        "color.h": "c",
+        "array": "c",
+        "stdbool.h": "c"
     }
 }

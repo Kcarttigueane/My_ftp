@@ -5,7 +5,7 @@
 ** cdup.c
 */
 
-#include "server.h"
+#include "../../include/server.h"
 
 char* get_current_path(int control_socket, client_t* clients)
 {
@@ -28,8 +28,12 @@ char* get_current_path(int control_socket, client_t* clients)
     return tmp;
 }
 
-void cdup(int control_socket, char** input_command, client_t* clients)
+void cdup(int control_socket, ...)
 {
+    va_list args;
+    va_start(args, control_socket);
+    client_t* clients = get_nth_argument(1, args);
+
     if (chdir("..") != 0) {
         send_resp(control_socket, FTP_REPLY_550);
     } else {
@@ -37,4 +41,5 @@ void cdup(int control_socket, char** input_command, client_t* clients)
         clients[control_socket - 4].current_path =
         get_current_path(control_socket, clients);
     }
+    va_end(args);
 }

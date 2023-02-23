@@ -7,8 +7,12 @@
 
 #include "../../include/server.h"
 
-void pwd(client_t* clients, int control_socket, server_data_t* server_data)
+void pwd(int control_socket, ...)
 {
+    va_list args;
+    va_start(args, control_socket);
+    client_t* clients = get_nth_argument(1, args);
+
     char msg[BUFFER_SIZE] = {0};
     int path_len = strlen(clients[control_socket - 4].current_path);
 
@@ -20,4 +24,5 @@ void pwd(client_t* clients, int control_socket, server_data_t* server_data)
         clients[control_socket - 4].current_path);
         send_resp(control_socket, msg);
     }
+    va_end(args);
 }

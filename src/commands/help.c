@@ -7,7 +7,7 @@
 
 #include "../../include/server.h"
 
-void help_all_commands(int control_socket, char** input_command)
+void help_all_commands(int control_socket)
 {
     char* message = my_strcat(FTP_REPLY_214, COMMANDS);
     write(control_socket, message, strlen(message));
@@ -16,7 +16,7 @@ void help_all_commands(int control_socket, char** input_command)
 
 void help_one_command(int control_socket, char** input_command)
 {
-    for (size_t i = 0; i < get_size_word_array(input_command); i++) {
+    for (size_t i = 0; i < COMMANDS_DATA_SIZE; i++) {
         if (!strcasecmp(input_command[1], COMMANDS_DATA[i].name)) {
             char* message =
                 my_strcat(FTP_REPLY_214, COMMANDS_DATA[i].description);
@@ -28,10 +28,16 @@ void help_one_command(int control_socket, char** input_command)
     send_resp(control_socket, FTP_REPLY_500);
 }
 
-void help_command(int control_socket, char** input_command)
+void help_command(int control_socket, ...)
 {
+    va_list args;
+    va_start(args, control_socket);
+
+    char** input_command = get_nth_argument(2, args);
     int size = get_size_word_array(input_command);
 
     (size > 1) ? help_one_command(control_socket, input_command)
-    : help_all_commands(control_socket, input_command);
+    : help_all_commands(control_socket);
+
+    va_end(args);
 }

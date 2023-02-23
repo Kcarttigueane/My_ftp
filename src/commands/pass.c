@@ -7,24 +7,26 @@
 
 #include "../../include/server.h"
 
-void pass(server_data_t* server_data, int i, char** command, client_t* clients)
+void pass(int control_socket, ...)
 {
+    va_list args;
+    va_start(args, control_socket);
+    char** command = get_nth_argument(2, args);
+    client_t* clients = get_nth_argument(1, args);
     char* password = get_size_word_array(command) == 2 ? command[1] : "";
-
-    if (strcmp(clients[i - 4].username, ANONYMOUS_USERNAME) ||
-        clients[i - 4].username[0] == '\0') {
-        write(i, FTP_REPLY_503, strlen(FTP_REPLY_503));
+    if (strcmp(clients[control_socket - 4].username, ANONYMOUS_USERNAME) ||
+        clients[control_socket - 4].username[0] == '\0') {
+        write(control_socket, FTP_REPLY_503, strlen(FTP_REPLY_503));
         return;
-    }
-    if (clients[i - 4].is_logged == true) {
-        write(i, FTP_REPLY_530, strlen(FTP_REPLY_530));
+    } if (clients[control_socket - 4].is_logged == true) {
+        write(control_socket, FTP_REPLY_530, strlen(FTP_REPLY_530));
         return;
-    }
-    if ((!strcmp(clients[i - 4].username, ANONYMOUS_USERNAME)) &&
+    } if ((!strcmp(clients[control_socket - 4].username, ANONYMOUS_USERNAME)) &&
         (!strcmp(password, ANONYMOUS_PASSWORD))) {
-        write(i, FTP_REPLY_230, strlen(FTP_REPLY_230));
-        clients[i - 4].is_logged = true;
+        write(control_socket, FTP_REPLY_230, strlen(FTP_REPLY_230));
+        clients[control_socket - 4].is_logged = true;
         return;
     }
-    write(i, FTP_REPLY_530, strlen(FTP_REPLY_530));
+    write(control_socket, FTP_REPLY_530, strlen(FTP_REPLY_530));
+    va_end(args);
 }
