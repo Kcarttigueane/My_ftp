@@ -10,9 +10,12 @@
 void* get_nth_argument(int n, va_list args)
 {
     void* arg = NULL;
-    for (int i = 0; i <= n; i++) {
-        arg = va_arg(args, void*);
-    }
+    va_list args_copy;
+    va_copy(args_copy, args);
+
+    for (int i = 0; i <= n; i++)
+        arg = va_arg(args_copy, void*);
+    va_end(args_copy);
     return arg;
 }
 

@@ -11,8 +11,9 @@ void user(int control_socket, ...)
 {
     va_list args;
     va_start(args, control_socket);
-    char** command = get_nth_argument(2, args);
     client_t* clients = get_nth_argument(1, args);
+    char** command = get_nth_argument(2, args);
+
     if (get_size_word_array(command) != 2) {
         write(control_socket, FTP_REPLY_501, strlen(FTP_REPLY_501));
         return;

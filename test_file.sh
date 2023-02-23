@@ -101,7 +101,7 @@ clean()
     rm -f $PIPE $OUT log &>/dev/null
 }
 
-# Simple authentication with USER + PASS command
+# ! Simple authentication with USER + PASS command
 test_authentification_simple()
 {
     local test_name="Authentication"
@@ -330,7 +330,7 @@ test_pwd()
 
 
 
-# test_authentification_simple
+test_authentification_simple
 # test_authentification_invalid_password
 # test_authentification_no_credentials
 # test_authentification_username_only

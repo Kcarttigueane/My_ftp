@@ -11,8 +11,8 @@ void pass(int control_socket, ...)
 {
     va_list args;
     va_start(args, control_socket);
-    char** command = get_nth_argument(2, args);
     client_t* clients = get_nth_argument(1, args);
+    char** command = get_nth_argument(2, args);
     char* password = get_size_word_array(command) == 2 ? command[1] : "";
     if (strcmp(clients[control_socket - 4].username, ANONYMOUS_USERNAME) ||
         clients[control_socket - 4].username[0] == '\0') {
