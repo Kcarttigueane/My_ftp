@@ -7,7 +7,7 @@
 
 #include "../../include/server.h"
 
-void retr(int control_socket, ...)
+void retr(__attribute_maybe_unused__ int control_socket, ...)
 {
     printf("RETR\n");
 }

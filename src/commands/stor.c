@@ -7,7 +7,7 @@
 
 #include "../../include/server.h"
 
-void stor(int control_socket, ...)
+void stor(__attribute_maybe_unused__ int control_socket, ...)
 {
     printf("STORE\n");
 }

@@ -7,7 +7,7 @@
 
 #include "../../include/server.h"
 
-void port(int control_socket, ...)
+void port(__attribute_maybe_unused__ int control_socket, ...)
 {
     printf("PORT\n");
 }

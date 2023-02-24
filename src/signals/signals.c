@@ -5,15 +5,15 @@
 ** signals.c
 */
 
-#include "server.h"
+#include "../../include/server.h"
 
-void sigint_handler(int signal)
+void sigint_handler(__attribute_maybe_unused__ int signal)
 {
     printf("Received SIGINT signal. Shutting down server.\n");
     exit(EXIT_SUCCESS);
 }
 
-void sigterm_handler(int signal)
+void sigterm_handler(__attribute_maybe_unused__ int signal)
 {
     printf("Received SIGTERM signal. Shutting down server.\n");
     exit(EXIT_SUCCESS);
