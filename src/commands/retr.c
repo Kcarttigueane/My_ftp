@@ -7,7 +7,7 @@
 
 #include "../../include/server.h"
 
-void retr(void)
+void retr(int control_socket, ...)
 {
     printf("RETR\n");
 }

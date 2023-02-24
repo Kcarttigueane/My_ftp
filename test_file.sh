@@ -328,6 +328,78 @@ test_pwd()
     return
 }
 
+# ! CWD command
+test_cwd()
+{
+    local test_name="CWD command"
+
+    local cmd1="USER $USERNAME"
+    local cmd2="PASS $PASS"
+    local cmd3="CWD /"
+
+    launch_client $HOST $PORT
+    if [[ ! $? -eq 1 ]]; then
+        echo "KO"
+        kill_client
+        return
+    fi
+
+    launch_test "$test_name" "$cmd1" 331
+    launch_test "$test_name" "$cmd2" 230
+    launch_test "$test_name" "$cmd3" 250
+
+    print_succeeded "$test_name"
+    return
+}
+
+# ! CDUP command
+test_cdup()
+{
+    local test_name="CDUP command"
+
+    local cmd1="USER $USERNAME"
+    local cmd2="PASS $PASS"
+    local cmd3="CDUP"
+
+    launch_client $HOST $PORT
+    if [[ ! $? -eq 1 ]]; then
+        echo "KO"
+        kill_client
+        return
+    fi
+
+    launch_test "$test_name" "$cmd1" 331
+    launch_test "$test_name" "$cmd2" 230
+    launch_test "$test_name" "$cmd3" 250
+
+    print_succeeded "$test_name"
+    return
+}
+
+# ! PASV command
+test_pasv()
+{
+    local test_name="PASV command"
+
+    local cmd1="USER $USERNAME"
+    local cmd2="PASS $PASS"
+    local cmd3="PASV"
+
+    launch_client $HOST $PORT
+    if [[ ! $? -eq 1 ]]; then
+        echo "KO"
+        kill_client
+        return
+    fi
+
+    launch_test "$test_name" "$cmd1" 331
+    launch_test "$test_name" "$cmd2" 230
+    launch_test "$test_name" "$cmd3" 227
+
+    print_succeeded "$test_name"
+    return
+}
+
 
 
 test_authentification_simple
@@ -338,6 +410,8 @@ test_authentification_simple
 # test_authentification_multiple_usernames
 
 # test_pwd
+
+test_pasv
 
 test_help_no_arguments
 test_help_arguments

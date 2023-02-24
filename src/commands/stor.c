@@ -7,7 +7,7 @@
 
 #include "../../include/server.h"
 
-void stor(void)
+void stor(int control_socket, ...)
 {
     printf("STORE\n");
 }

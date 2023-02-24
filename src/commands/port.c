@@ -7,7 +7,7 @@
 
 #include "../../include/server.h"
 
-void port(void)
+void port(int control_socket, ...)
 {
     printf("PORT\n");
 }

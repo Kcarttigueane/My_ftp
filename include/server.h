@@ -32,6 +32,8 @@
 
     #include <stdarg.h>
 
+    #include <dirent.h>
+
     // ! Error Status Codes :
 
     #define ERROR 84
@@ -74,9 +76,6 @@
         fd_set fds, copy_fds;
         size_t nb_clients;
         char* initial_path;
-
-        int data_socket_fd;
-        socklen_t data_len;
     } server_data_t;
 
     typedef struct client {
@@ -87,6 +86,10 @@
         bool is_logged;
         char* current_path;
         socklen_t client_len;
+
+        int data_socket_fd;
+        struct sockaddr_in data_address;
+        socklen_t data_len;
     } client_t;
 
     typedef void (*command_func_t)(int, ...);

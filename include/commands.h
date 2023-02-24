@@ -26,12 +26,11 @@ void pwd(int control_socket, ...);
 
 // ! PASV:
 
-void pasv(circular_buffer* cb, server_data_t* server_data,
-int control_socket, client_t* clients);
+void pasv(int control_socket, ...);
 
 // ! LIST:
 
-void list(void);
+void list(int control_socket, ...);
 
 // ! CWD:
 
@@ -51,7 +50,7 @@ void quit(int control_socket, ...);
 
 // ! PORT:
 
-void port(void);
+void port(int control_socket, ...);
 
 // ! USER:
 
@@ -67,8 +66,8 @@ void noop(int control_socket, ...);
 
 // ! RETR:
 
-void retr(void);
+void retr(int control_socket, ...);
 
 // ! STOR:
 
-void stor(void);
+void stor(int control_socket, ...);
