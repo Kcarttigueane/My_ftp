@@ -14,7 +14,8 @@ NAME	= myftp
 SRC	=	$(wildcard *.c)	\
 		$(wildcard lib/*.c) \
 		$(wildcard src/**/*.c) \
-		$(wildcard src/*.c) \
+		$(wildcard src/**/**/*.c)\
+ 		$(wildcard src/*.c) \
 
 
 OBJ	= $(SRC:.c=.o)

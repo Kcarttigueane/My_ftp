@@ -18,9 +18,9 @@ const command_t COMMANDS_DATA[] = {
     {"DELE", "Delete file on the server\r\n", dele},
     {"PWD", "Print working directory\r\n", pwd},
     {"PASV", "Enable \"passive\" mode for data transfer\r\n", pasv},
-    {"PORT", "Enable \"active\" mode for data transfer\r\n", NULL},
-    {"RETR", "Download file from the server to the client\r\n", NULL},
-    {"STOR", "Upload file from the client to the server\r\n", NULL},
+    {"PORT", "Enable \"active\" mode for data transfer\r\n", port},
+    {"RETR", "Download file from the server to the client\r\n", retr},
+    {"STOR", "Upload file from the client to the server\r\n", stor},
     {"LIST", "List files in the current working directory\r\n", list},
 };
 

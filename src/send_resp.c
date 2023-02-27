@@ -5,9 +5,9 @@
 ** send_resp.c
 */
 
-#include "server.h"
+#include "../include/server.h"
 
 void send_resp(int socket_fd, char *msg)
 {
-    write(socket_fd, msg, strlen(msg));
+    dprintf(socket_fd, "%s", msg);
 }

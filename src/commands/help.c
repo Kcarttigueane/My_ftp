@@ -10,7 +10,7 @@
 void help_all_commands(int control_socket)
 {
     char* message = my_strcat(FTP_REPLY_214, COMMANDS);
-    write(control_socket, message, strlen(message));
+    dprintf(control_socket, "%s%s", FTP_REPLY_214, COMMANDS);
     free(message);
 }
 
@@ -32,6 +32,11 @@ void help_command(int control_socket, ...)
 {
     va_list args;
     va_start(args, control_socket);
+
+    client_t* clients = get_nth_argument(1, args);
+
+    if (!is_logged(control_socket, clients, &args))
+        return;
 
     char** input_command = get_nth_argument(2, args);
     int size = get_size_word_array(input_command);

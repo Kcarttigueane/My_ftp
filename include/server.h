@@ -137,12 +137,18 @@ client_t* clients);
 
 void accept_new_client(server_data_t* server_data, client_t* clients);
 
-    // ! Signal handlers:
 
-void sigint_handler(int signal);
-void sigterm_handler(int signal);
 
 void* get_nth_argument(int n, va_list args);
+
+bool is_logged(int control_socket, client_t* client, va_list* args);
+
+int create_temp_socket(server_data_t* server_data);
+
+FILE* open_file(char* file_name, int control_socket, char* message);
+
+bool is_data_con_establish(int control_socket,
+server_data_t* server_data);
 
 extern const command_t COMMANDS_DATA[];
 extern const size_t COMMANDS_DATA_SIZE;

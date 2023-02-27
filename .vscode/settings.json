@@ -25,6 +25,9 @@
         "redirect.h": "c",
         "color.h": "c",
         "array": "c",
-        "stdbool.h": "c"
+        "stdbool.h": "c",
+        "errno.h": "c",
+        "string": "c",
+        "string_view": "c"
     }
 }

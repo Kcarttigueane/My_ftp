@@ -32,7 +32,11 @@ void cdup(int control_socket, ...)
 {
     va_list args;
     va_start(args, control_socket);
+
     client_t* clients = get_nth_argument(1, args);
+
+    if (!is_logged(control_socket, clients, &args))
+        return;
 
     if (chdir("..") != 0) {
         send_resp(control_socket, FTP_REPLY_550);

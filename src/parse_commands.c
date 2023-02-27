@@ -29,6 +29,7 @@ int control_socket, client_t* clients)
         printf("command is null\n");
         return;
     }
+
     for (size_t i = 0; i < COMMANDS_DATA_SIZE; i++) {
         if (!strcasecmp(command[0], COMMANDS_DATA[i].name)) {
             command_func_t func = COMMANDS_DATA[i].func;
@@ -37,6 +38,6 @@ int control_socket, client_t* clients)
             return;
         }
     }
-    write(control_socket, FTP_REPLY_500, strlen(FTP_REPLY_500));
+    send_resp(control_socket, FTP_REPLY_500);
     free_word_array(command);
 }

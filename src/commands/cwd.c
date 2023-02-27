@@ -27,9 +27,9 @@ void cwd_command(int control_socket, ...)
     va_list args;
     va_start(args, control_socket);
     client_t* clients = get_nth_argument(1, args);
+    if (!is_logged(control_socket, clients, &args)) return;
     char** input_command = get_nth_argument(2, args);
     server_data_t* server_data = get_nth_argument(0, args);
-
     if (chdir(input_command[1]) < 0) {
         handle_chdir_error(control_socket, errno);
         va_end(args);

@@ -54,10 +54,14 @@ void port(int control_socket, ...);
 
 // ! USER:
 
+bool test_user_conditions(client_t* clients, char** command,
+int control_socket);
 void user(int control_socket, ...);
 
 // ! PASS:
 
+bool test_pass_conditions(client_t* clients, int control_socket,
+char** command);
 void pass(int control_socket, ...);
 
 // ! NOOP:
