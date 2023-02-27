@@ -35,12 +35,12 @@ void list(int control_socket, ...)
     if (!is_data_con_establish(control_socket, server_data)) return;
 
     int data_sock_temp = create_temp_socket(server_data);
-    dprintf(control_socket, "150 Opening data connection\r\n");
+    dprintf(control_socket, FTP_REPLY_150);
     char* path_to_study = (get_size_word_array(input_command) == 2)
     ? input_command[1]
     : clients[control_socket - 4].current_path;
     list_command_display(path_to_study, data_sock_temp);
-    dprintf(data_sock_temp, "226 Transfer complete\r\n");
+    dprintf(data_sock_temp, FTP_REPLY_226);
     close(data_sock_temp);
     close(server_data->data_socket_fd);
     server_data->data_socket_fd = FAILURE;

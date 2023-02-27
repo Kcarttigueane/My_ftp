@@ -17,7 +17,7 @@ void stor_file(int data_socket_temp, FILE* file)
         handle_error("stor: read data socket");
         return;
     }
-    if (fwrite(buffer, 1, bytes_received, file) < bytes_received) {
+    if (fwrite(buffer, 1, bytes_received, file) < (size_t)bytes_received) {
         handle_error("fwrite failed in stor");
         return;
     }
