@@ -12,9 +12,15 @@ void stor_file(int data_socket_temp, FILE* file)
     char buffer[BUFFER_SIZE];
     int bytes_received;
 
-    while ((bytes_received = read(data_socket_temp, buffer, BUFFER_SIZE)) > 0)
-        if (write(fileno(file), buffer, bytes_received) < 0)
-            handle_error("write");
+    bytes_received = read(data_socket_temp, buffer, BUFFER_SIZE);
+    if (bytes_received < 0) {
+        handle_error("stor: read data socket");
+        return;
+    }
+    if (fwrite(buffer, 1, bytes_received, file) < bytes_received) {
+        handle_error("fwrite failed in stor");
+        return;
+    }
 }
 
 void stor_cleanup(server_data_t* server_data, FILE* file, int data_socket_temp,
@@ -43,8 +49,8 @@ void stor(int control_socket, ...)
     int data_socket_temp = create_temp_socket(server_data);
     FILE* file = fopen(commands[1], "w");
     if (!file) return;
-    dprintf(control_socket, "150 Ok to send data.\r\n");
+    dprintf(control_socket, FTP_REPLY_150);
     stor_file(data_socket_temp, file);
-    dprintf(control_socket, FTP_REPLY_426);
+    dprintf(control_socket, FTP_REPLY_226);
     stor_cleanup(server_data, file, data_socket_temp, args);
 }
