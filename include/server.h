@@ -30,8 +30,6 @@
     #include <signal.h>
     #include <stdbool.h>
 
-    #include <stdarg.h>
-
     #include <dirent.h>
 
     #include <limits.h>

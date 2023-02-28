@@ -12,12 +12,10 @@ int control_socket, client_t* clients)
 {
     char** command = cb_pop_command(cb);
     debug_word_array(command);
-
     if (command == NULL) {
         send_resp(control_socket, FTP_REPLY_500);
         return;
     }
-
     for (size_t i = 0; i < COMMANDS_DATA_SIZE; i++) {
         if (!strcasecmp(command[0], COMMANDS_DATA[i].name)) {
             list_args_t args = {.control_socket = control_socket,
