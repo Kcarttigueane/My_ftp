@@ -17,7 +17,7 @@ server_data_t* server_data)
         return;
     }
     if (strncmp(new_path, server_data->initial_path,
-                strlen(server_data->initial_path)) != 0) {
+        strlen(server_data->initial_path)) != 0) {
         send_resp(control_socket, FTP_REPLY_550);
         free(new_path);
         return;

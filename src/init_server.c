@@ -35,6 +35,7 @@ void init_server(server_data_t* server_data, char const* argv[])
     server_data->nb_clients = 0;
     server_data->timeout.tv_sec = 5;
     server_data->timeout.tv_usec = 5000;
+    server_data->data_socket_fd = FAILURE;
 
     create_socket(server_data);
     memset(&server_data->server_address, 0,
