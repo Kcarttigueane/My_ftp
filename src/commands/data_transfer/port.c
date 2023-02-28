@@ -22,7 +22,7 @@ int port_data_socket(char* ip, int port1, int port2)
         handle_error("socket");
 
     if (connect(data_socket_fd, (struct sockaddr*)&client_address,
-                sizeof(client_address)) < 0)
+    sizeof(client_address)) < 0)
         handle_error("connect");
 
     return data_socket_fd;

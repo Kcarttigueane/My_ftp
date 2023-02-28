@@ -26,7 +26,7 @@ int control_socket, client_t* clients)
     debug_word_array(command);
 
     if (command == NULL) {
-        printf("command is null\n");
+        send_resp(control_socket, FTP_REPLY_500);
         return;
     }
 
