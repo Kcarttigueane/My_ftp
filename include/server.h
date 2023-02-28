@@ -69,9 +69,9 @@
     // ! DATA MODE:
 
     typedef enum {
+        NO_MODE,
         ACTIVE,
-        PASSIVE,
-        NO_MODE
+        PASSIVE
     } data_mode_t;
 
     // ! Structures:
