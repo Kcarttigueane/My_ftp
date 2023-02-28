@@ -13,7 +13,8 @@ int main(int argc, char const* argv[])
         printf(SERVER_USAGE);
         return ERROR;
     }
-    is_valid_path(argv[2]);
+    if (is_valid_path(argv[2]) == ERROR)
+        return ERROR;
 
     server_data_t server_data;
 

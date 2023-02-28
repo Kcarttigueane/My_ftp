@@ -7,43 +7,33 @@
 
 #include "../../include/server.h"
 
-char* get_current_path(int control_socket, client_t* clients)
+void change_directory(int control_socket, client_t *clients, char *current_path)
 {
-    char* current_path = strdup(clients[control_socket - 4].current_path);
-    char* tmp = NULL;
-    int last_slash_pos = 0;
-
-    if (strcmp(current_path, "/") == 0)
-        return current_path;
-
-    for (int i = strlen(current_path) - 1; i >= 0; i--) {
-        if (current_path[i] == '/') {
-            last_slash_pos = i;
-            break;
-        }
+    char* new_path = dirname(current_path);
+    if (chdir(new_path) == FAILURE) {
+        perror("chdir");
+        send_resp(control_socket, FTP_REPLY_550);
+    } else {
+        send_resp(control_socket, FTP_REPLY_250);
+        clients[control_socket - 4].current_path = strdup(new_path);
     }
-    tmp = strndup(current_path, last_slash_pos);
-    free(current_path);
-    clients[control_socket - 4].current_path = strdup(tmp);
-    return tmp;
 }
 
 void cdup(int control_socket, ...)
 {
     va_list args;
     va_start(args, control_socket);
-
     client_t* clients = get_nth_argument(1, args);
 
-    if (!is_logged(control_socket, clients, &args))
-        return;
+    if (!is_logged(control_socket, clients, &args)) return;
 
-    if (chdir("..") != 0) {
+    server_data_t* server_data = get_nth_argument(0, args);
+    char* current_path = clients[control_socket - 4].current_path;
+
+    if (!strcmp(current_path, server_data->initial_path)) {
         send_resp(control_socket, FTP_REPLY_550);
-    } else {
-        send_resp(control_socket, FTP_REPLY_200);
-        clients[control_socket - 4].current_path =
-        get_current_path(control_socket, clients);
+        return;
     }
+    change_directory(control_socket, clients, current_path);
     va_end(args);
 }

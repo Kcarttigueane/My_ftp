@@ -34,6 +34,9 @@
 
     #include <dirent.h>
 
+    #include <limits.h>
+    #include <libgen.h>
+
     // ! Error Status Codes :
 
     #define ERROR 84
@@ -91,6 +94,13 @@
         socklen_t client_len;
     } client_t;
 
+    typedef struct {
+        int control_socket;
+        server_data_t* server_data;
+        char** input_command;
+        client_t* clients;
+    } list_args_t;
+
     typedef void (*command_func_t)(int, ...);
 
     typedef struct command {
@@ -98,11 +108,6 @@
         char* description;
         command_func_t func;
     } command_t;
-
-    typedef struct {
-        const char* name;
-        const char* description;
-    } command_data_t;
 
     // ! Project header files:
 
@@ -118,8 +123,11 @@ void init_server(server_data_t* server_data, char const* argv[]);
 void create_socket(server_data_t* server_data);
 void bind_socket(server_data_t* server_data);
 void listen_socket(server_data_t* server_data);
-void is_valid_path(const char* path);
+int is_valid_path(const char* path);
 
+bool check_directory_exists(const char* path);
+bool check_directory(const char* path);
+bool check_directory_permissions(const char* path);
 
     // ! Parsing commands:
 

@@ -23,19 +23,19 @@ void accept_new_client(server_data_t* server_data, client_t* clients)
 void handle_new_client_connection(server_data_t* server_data, client_t* clients)
 {
     accept_new_client(server_data, clients);
-
     send_resp(clients[server_data->nb_clients].client_socked_fd, FTP_REPLY_220);
-
     FD_SET(clients[server_data->nb_clients].client_socked_fd,
     &server_data->fds);
-
     if (server_data->fd_max <
         clients[server_data->nb_clients].client_socked_fd) {
         server_data->fd_max = clients[server_data->nb_clients].client_socked_fd;
     }
     clients[server_data->nb_clients].current_path =
-        strdup(server_data->initial_path);
-
+        realpath(server_data->initial_path, NULL);
+    if (!clients[server_data->nb_clients].current_path) {
+        perror("realpath");
+        exit(EXIT_FAILURE);
+    }
     memset(clients[server_data->nb_clients].username, 0, BUFFER_SIZE);
     memset(clients[server_data->nb_clients].password, 0, BUFFER_SIZE);
     clients[server_data->nb_clients].is_logged = false;
