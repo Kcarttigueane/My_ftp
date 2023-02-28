@@ -66,6 +66,14 @@
         } while (0)
 
 
+    // ! DATA MODE:
+
+    typedef enum {
+        ACTIVE,
+        PASSIVE,
+        NO_MODE
+    } data_mode_t;
+
     // ! Structures:
 
     typedef struct server_data {
@@ -77,6 +85,8 @@
         fd_set fds, copy_fds;
         size_t nb_clients;
         char* initial_path;
+
+        data_mode_t data_mode;
 
         int data_socket_fd;
         socklen_t data_len;
@@ -145,7 +155,7 @@ void accept_new_client(server_data_t* server_data, client_t* clients);
 
 bool is_logged(int control_socket, client_t* clients);
 
-int create_temp_socket(server_data_t* server_data);
+int create_temp_socket(server_data_t* server_data, client_t* clients);
 
 FILE* open_file(char* file_name, int control_socket, char* message);
 

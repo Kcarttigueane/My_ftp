@@ -46,7 +46,8 @@ void retr(list_args_t* args)
         return;
     if (!is_data_con_establish(args->control_socket, args->server_data))
         return;
-    int data_socket_temp = create_temp_socket(args->server_data);
+    int data_socket_temp = create_temp_socket(args->server_data, args->clients);
+    args->server_data->data_mode = NO_MODE;
     send_file(data_socket_temp, file);
     dprintf(args->control_socket, "226 Transfer complete.\r\n");
     retr_cleanup(args->server_data, file, data_socket_temp);

@@ -10,6 +10,7 @@
 void set_socket_options(int socket_fd)
 {
     int reuse = 1;
+
     if (setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse)) <
         0) {
         handle_error("setsockopt");
@@ -55,6 +56,9 @@ void ip_to_bytes(const char* ip, int* bytes)
 
 void pasv(list_args_t* args)
 {
+    args->server_data->data_socket_fd = create_data_socket(args->server_data);
+    args->server_data->data_len = sizeof(args->server_data->data_address);
+
     int port = get_bound_port(args->server_data->data_socket_fd,
     (struct sockaddr*)&args->server_data->data_address,
     &args->server_data->data_len);
@@ -67,4 +71,6 @@ void pasv(list_args_t* args)
     bytes[1], bytes[2], bytes[3], port / 256, port % 256);
 
     printf("Data socket port: %d\n", (port / 256) * 256 + (port % 256));
+
+    args->server_data->data_mode = PASSIVE;
 }

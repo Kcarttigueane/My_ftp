@@ -21,10 +21,6 @@ int port_data_socket(char* ip, int port1, int port2)
     if (data_socket_fd < 0)
         handle_error("socket");
 
-    if (connect(data_socket_fd, (struct sockaddr*)&client_address,
-                sizeof(client_address)) < 0)
-        handle_error("connect");
-
     return data_socket_fd;
 }
 
@@ -54,4 +50,6 @@ void port(list_args_t* args)
 
     handle_port_args(args->control_socket, args->clients, args->server_data,
     args->input_command);
+
+    args->server_data->data_mode = ACTIVE;
 }
