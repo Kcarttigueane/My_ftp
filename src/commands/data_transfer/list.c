@@ -31,26 +31,24 @@ void list_clean_up(server_data_t* server_data, int data_sock_temp)
     server_data->data_socket_fd = FAILURE;
 }
 
-void list(int control_socket, ...)
+void list(list_args_t* args)
 {
-    va_list args;
-    va_start(args, control_socket);
-    server_data_t* server_data = get_nth_argument(0, args);
-    char** input_command = get_nth_argument(2, args);
-    client_t* clients = get_nth_argument(1, args);
-    if (!is_logged(control_socket, clients, &args)) return;
-    if (!is_data_con_establish(control_socket, server_data)) return;
-    int data_sock_temp = create_temp_socket(server_data);
-    dprintf(control_socket, FTP_REPLY_150);
-    char* path_to_study = (get_size_word_array(input_command) == 2)
-    ? input_command[1]
-    : clients[control_socket - 4].current_path;
-    if (strncmp(path_to_study, server_data->initial_path,
-        strlen(server_data->initial_path)) != 0) {
-        dprintf(control_socket, FTP_REPLY_550);
+    if (!is_logged(args->control_socket, args->clients))
+        return;
+    if (!is_data_con_establish(args->control_socket, args->server_data))
+        return;
+    int data_sock_temp = create_temp_socket(args->server_data);
+    dprintf(args->control_socket, FTP_REPLY_150);
+    char* path_to_study =
+        (get_size_word_array(args->input_command) == 2)
+        ? args->input_command[1]
+        : args->clients[args->control_socket - 4].current_path;
+    if (strncmp(path_to_study, args->server_data->initial_path,
+                strlen(args->server_data->initial_path)) != 0) {
+        dprintf(args->control_socket, FTP_REPLY_550);
         close(data_sock_temp);
         return;
     }
     list_command_display(path_to_study, data_sock_temp);
-    list_clean_up(server_data, data_sock_temp);
+    list_clean_up(args->server_data, data_sock_temp);
 }

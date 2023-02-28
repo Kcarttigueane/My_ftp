@@ -101,7 +101,7 @@
         client_t* clients;
     } list_args_t;
 
-    typedef void (*command_func_t)(int, ...);
+    typedef void (*command_func_t)(list_args_t* args);
 
     typedef struct command {
         char* name;
@@ -145,11 +145,7 @@ client_t* clients);
 
 void accept_new_client(server_data_t* server_data, client_t* clients);
 
-
-
-void* get_nth_argument(int n, va_list args);
-
-bool is_logged(int control_socket, client_t* client, va_list* args);
+bool is_logged(int control_socket, client_t* clients);
 
 int create_temp_socket(server_data_t* server_data);
 

@@ -53,23 +53,16 @@ void ip_to_bytes(const char* ip, int* bytes)
     sscanf(ip, "%d.%d.%d.%d", &bytes[0], &bytes[1], &bytes[2], &bytes[3]);
 }
 
-void pasv(int control_socket, ...)
+void pasv(list_args_t* args)
 {
-    va_list args;
-    va_start(args, control_socket);
-    server_data_t* server_data = get_nth_argument(0, args);
-
-    server_data->data_socket_fd = create_data_socket(server_data);
-    server_data->data_len = sizeof(server_data->data_address);
-
-    int port = get_bound_port(server_data->data_socket_fd,
-    (struct sockaddr*)&server_data->data_address,
-    &server_data->data_len);
+    int port = get_bound_port(args->server_data->data_socket_fd,
+    (struct sockaddr*)&args->server_data->data_address,
+    &args->server_data->data_len);
     int bytes[4];
 
-    ip_to_bytes(inet_ntoa(server_data->server_address.sin_addr), bytes);
+    ip_to_bytes(inet_ntoa(args->server_data->server_address.sin_addr), bytes);
 
-    dprintf(control_socket,
+    dprintf(args->control_socket,
     "227 Entering Passive Mode (%d,%d,%d,%d,%d,%d).\r\n", bytes[0],
     bytes[1], bytes[2], bytes[3], port / 256, port % 256);
 

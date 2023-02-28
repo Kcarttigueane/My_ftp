@@ -22,7 +22,7 @@ int port_data_socket(char* ip, int port1, int port2)
         handle_error("socket");
 
     if (connect(data_socket_fd, (struct sockaddr*)&client_address,
-    sizeof(client_address)) < 0)
+                sizeof(client_address)) < 0)
         handle_error("connect");
 
     return data_socket_fd;
@@ -47,18 +47,11 @@ server_data_t* server_data, char** port_args)
     send_resp(clients[control_socket - 4].client_socked_fd, FTP_REPLY_200);
 }
 
-void port(int control_socket, ...)
+void port(list_args_t* args)
 {
-    va_list args;
-    va_start(args, control_socket);
-    client_t* clients = get_nth_argument(1, args);
-    server_data_t* server_data = get_nth_argument(0, args);
-    char** port_args = get_nth_argument(2, args);
-
-    if (!is_logged(control_socket, clients, &args))
+    if (!is_logged(args->control_socket, args->clients))
         return;
 
-    handle_port_args(control_socket, clients, server_data, port_args);
-
-    va_end(args);
+    handle_port_args(args->control_socket, args->clients, args->server_data,
+    args->input_command);
 }

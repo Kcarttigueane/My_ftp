@@ -9,7 +9,8 @@
 
 void quit_client_cleanup(int control_socket, client_t* clients)
 {
-    if (!clients[control_socket - 4].is_logged) return;
+    if (!clients[control_socket - 4].is_logged)
+        return;
 
     close(clients[control_socket - 4].client_socked_fd);
     clients[control_socket - 4].is_logged = false;
@@ -19,22 +20,16 @@ void quit_client_cleanup(int control_socket, client_t* clients)
     free(clients[control_socket - 4].current_path);
 }
 
-void quit(int control_socket, ...)
+void quit(list_args_t* args)
 {
-    va_list args;
-    va_start(args, control_socket);
-    client_t* clients = get_nth_argument(1, args);
-    server_data_t* server_data = get_nth_argument(0, args);
-
-    if (server_data->data_socket_fd != FAILURE) {
-        dprintf(control_socket, FTP_REPLY_226);
-        close(server_data->data_socket_fd);
-        server_data->data_socket_fd = FAILURE;
+    if (args->server_data->data_socket_fd != FAILURE) {
+        dprintf(args->control_socket, FTP_REPLY_226);
+        close(args->server_data->data_socket_fd);
+        args->server_data->data_socket_fd = FAILURE;
     }
 
-    dprintf(control_socket, FTP_REPLY_221);
-    quit_client_cleanup(control_socket, clients);
-    close(control_socket);
-    FD_CLR(control_socket, &server_data->fds);
-    va_end(args);
+    dprintf(args->control_socket, FTP_REPLY_221);
+    quit_client_cleanup(args->control_socket, args->clients);
+    close(args->control_socket);
+    FD_CLR(args->control_socket, &args->server_data->fds);
 }

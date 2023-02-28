@@ -30,17 +30,11 @@ bool test_pass_conditions(client_t* clients, int control_socket, char** command)
     return false;
 }
 
-void pass(int control_socket, ...)
+void pass(list_args_t* args)
 {
-    va_list args;
-    va_start(args, control_socket);
-    client_t* clients = get_nth_argument(1, args);
-    char** command = get_nth_argument(2, args);
-
-    if (test_pass_conditions(clients, control_socket, command)) {
-        va_end(args);
+    if (test_pass_conditions(args->clients, args->control_socket,
+        args->input_command)) {
         return;
     }
-    send_resp(control_socket, FTP_REPLY_530);
-    va_end(args);
+    send_resp(args->control_socket, FTP_REPLY_530);
 }

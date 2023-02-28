@@ -17,7 +17,7 @@ server_data_t* server_data)
         return;
     }
     if (strncmp(new_path, server_data->initial_path,
-        strlen(server_data->initial_path)) != 0) {
+                strlen(server_data->initial_path)) != 0) {
         send_resp(control_socket, FTP_REPLY_550);
         free(new_path);
         return;
@@ -29,26 +29,17 @@ server_data_t* server_data)
         send_resp(control_socket, FTP_REPLY_250);
         clients[control_socket - 4].current_path = strdup(new_path);
     }
-    free(new_path);
 }
 
-void cwd_command(int control_socket, ...)
+void cwd_command(list_args_t* args)
 {
-    va_list args;
-    va_start(args, control_socket);
-    client_t* clients = get_nth_argument(1, args);
-
-    if (!is_logged(control_socket, clients, &args))
+    if (!is_logged(args->control_socket, args->clients))
         return;
 
-    char** input_command = get_nth_argument(2, args);
-    if (!input_command[1]) {
-        send_resp(control_socket, FTP_REPLY_501);
+    if (!args->input_command[1]) {
+        send_resp(args->control_socket, FTP_REPLY_501);
         return;
     }
-
-    server_data_t* server_data = get_nth_argument(0, args);
-
-    cwd_execution(control_socket, input_command, clients, server_data);
-    va_end(args);
+    cwd_execution(args->control_socket, args->input_command, args->clients,
+    args->server_data);
 }

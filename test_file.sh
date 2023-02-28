@@ -403,19 +403,19 @@ test_pasv()
 
 
 test_authentification_simple
-# test_authentification_invalid_password
-# test_authentification_no_credentials
+test_authentification_invalid_password
+test_authentification_no_credentials
 # test_authentification_username_only
 # test_authentification_password_only
 # test_authentification_multiple_usernames
 
 # test_pwd
 
-test_pasv
+# test_pasv
 
-test_help_no_arguments
-test_help_arguments
-test_noop
+# test_help_no_arguments
+# test_help_arguments
+# test_noop
 
 clean
 

@@ -28,21 +28,13 @@ void help_one_command(int control_socket, char** input_command)
     send_resp(control_socket, FTP_REPLY_500);
 }
 
-void help_command(int control_socket, ...)
+void help_command(list_args_t* args)
 {
-    va_list args;
-    va_start(args, control_socket);
-
-    client_t* clients = get_nth_argument(1, args);
-
-    if (!is_logged(control_socket, clients, &args))
+    if (!is_logged(args->control_socket, args->clients))
         return;
 
-    char** input_command = get_nth_argument(2, args);
-    int size = get_size_word_array(input_command);
+    int size = get_size_word_array(args->input_command);
 
-    (size > 1) ? help_one_command(control_socket, input_command)
-    : help_all_commands(control_socket);
-
-    va_end(args);
+    (size > 1) ? help_one_command(args->control_socket, args->input_command)
+    : help_all_commands(args->control_socket);
 }
