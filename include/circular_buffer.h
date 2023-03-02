@@ -5,10 +5,13 @@
 ** circular_buffer.h
 */
 
-#if !defined(CIRCULAR_BUFFER_H)
+#ifndef CIRCULAR_BUFFER_H
     #define CIRCULAR_BUFFER_H
 
-    #include "server.h"
+    #include <unistd.h>
+    #include <stdbool.h>
+
+    #define BUFFER_SIZE 1024
 
     typedef struct cb {
         char buffer[BUFFER_SIZE];
@@ -34,6 +37,5 @@ int find_crlf_index(circular_buffer* cb);
 char* copy_chars(circular_buffer* cb, size_t nb_char_to_copy);
 size_t get_nb_char_to_copy(circular_buffer* cb, int CRLF_index);
 char** cb_pop_command(circular_buffer* cb);
-
 
 #endif // CIRCULAR_BUFFER_H

@@ -7,19 +7,35 @@
 
 #include "../include/server.h"
 
+#include <ctype.h>
+#include <stdbool.h>
+#include <string.h>
+
+bool has_one_non_whitespace_char(const char* str)
+{
+    for (size_t i = 0; i < strlen(str); i++)
+        if (!isspace(str[i]) && str[i] != '\r' && str[i] != '\n')
+            return true;
+    return false;
+}
+
 void read_input(int i, server_data_t* server_data, circular_buffer* cb,
 client_t* clients)
 {
     char buffer[BUFFER_SIZE] = {0};
     server_data->read_input_len = read(i, buffer, BUFFER_SIZE);
     buffer[server_data->read_input_len] = '\0';
+    if (!has_one_non_whitespace_char(buffer)) {
+        send_resp(i, FTP_REPLY_500);
+        return;
+    }
     if (server_data->read_input_len == 0) {
         FD_CLR(i, &server_data->fds);
         close(i);
         printf("Close client: %i\n", i);
     } else {
-        printf("Client %i said: %s\n", i, buffer);
         cb_push(cb, buffer);
+        printf("Client %i said: %s\n", i, buffer);
         parse_command(cb, server_data, i, clients);
     }
 }

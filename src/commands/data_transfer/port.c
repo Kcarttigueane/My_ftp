@@ -5,8 +5,6 @@
 ** port.c
 */
 
-#define PORT_ARGS_FORMAT "%[^,],%d,%d"
-
 #include "../../../include/server.h"
 
 int port_data_socket(char* ip, int port1, int port2)

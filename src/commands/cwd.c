@@ -10,24 +10,21 @@
 void cwd_execution(int control_socket, char** input_command, client_t* clients,
 server_data_t* server_data)
 {
+    chdir(clients[control_socket - 4].current_path);
+
     char* new_path = realpath(input_command[1], NULL);
 
-    if (!new_path) {
-        send_resp(control_socket, FTP_REPLY_550);
+    if (!is_directory_accessible(control_socket, server_data, new_path))
         return;
-    }
-    if (strncmp(new_path, server_data->initial_path,
-        strlen(server_data->initial_path)) != 0) {
-        send_resp(control_socket, FTP_REPLY_550);
-        free(new_path);
-        return;
-    }
+
     if (chdir(new_path) == FAILURE) {
         perror("chdir");
         send_resp(control_socket, FTP_REPLY_550);
+        free(new_path);
     } else {
         send_resp(control_socket, FTP_REPLY_250);
-        clients[control_socket - 4].current_path = strdup(new_path);
+        clients[control_socket - 4].current_path = new_path;
+        chdir(server_data->initial_path);
     }
 }
 

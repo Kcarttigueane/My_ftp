@@ -1,11 +1,11 @@
 /*
-** EPITECH PROJECT, 2023
-** STEP-1
+** EPITECH PROJECT, 2022
+** Repository-MyFTP
 ** File description:
-** main.c
+** server.h
 */
 
-#if !defined(SERVER_H)
+#ifndef SERVER_H
     #define SERVER_H
 
     #include <sys/select.h>
@@ -52,6 +52,8 @@
     #define CARRIAGE_RETURN '\r'
     #define LINE_FEED '\n'
 
+    #define PORT_ARGS_FORMAT "%[^,],%d,%d"
+
     #define SERVER_USAGE \
         "USAGE: ./myftp port path\n\
     \tport is the port number on which the server socket listens\n\
@@ -96,7 +98,6 @@
         int client_socked_fd;
         struct sockaddr_in client_address;
         char username[BUFFER_SIZE];
-        char password[BUFFER_SIZE];
         bool is_logged;
         char* current_path;
         socklen_t client_len;
@@ -161,6 +162,9 @@ FILE* open_file(char* file_name, int control_socket, char* message);
 
 bool is_data_con_establish(int control_socket,
 server_data_t* server_data);
+
+bool is_directory_accessible(int control_socket, server_data_t *server_data,
+char *new_path);
 
 extern const command_t COMMANDS_DATA[];
 extern const size_t COMMANDS_DATA_SIZE;

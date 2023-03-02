@@ -9,7 +9,7 @@
 
 bool test_pass_conditions(client_t* clients, int control_socket, char** command)
 {
-    char* password = get_size_word_array(command) == 2 ? command[1] : "";
+    char* input_password = get_size_word_array(command) == 2 ? command[1] : "";
 
     if (strcmp(clients[control_socket - 4].username, ANONYMOUS_USERNAME) ||
         clients[control_socket - 4].username[0] == '\0') {
@@ -21,12 +21,11 @@ bool test_pass_conditions(client_t* clients, int control_socket, char** command)
         return true;
     }
     if ((!strcmp(clients[control_socket - 4].username, ANONYMOUS_USERNAME)) &&
-        (!strcmp(password, ANONYMOUS_PASSWORD))) {
+        (!strcmp(input_password, ANONYMOUS_PASSWORD))) {
         send_resp(control_socket, FTP_REPLY_230);
         clients[control_socket - 4].is_logged = true;
         return true;
     }
-    send_resp(control_socket, FTP_REPLY_530);
     return false;
 }
 

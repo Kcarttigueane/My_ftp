@@ -29,6 +29,15 @@ void listen_socket(server_data_t* server_data)
         handle_error("Listen");
 }
 
+void init_server_data(server_data_t *server_data)
+{
+    memset(&server_data->server_address, 0,
+    sizeof(server_data->server_address));
+    server_data->server_address.sin_family = AF_INET;
+    server_data->server_address.sin_addr.s_addr = INADDR_ANY;
+    server_data->server_address.sin_port = htons(server_data->PORT);
+}
+
 void init_server(server_data_t* server_data, char const* argv[])
 {
     server_data->PORT = atoi(argv[1]);
@@ -38,17 +47,16 @@ void init_server(server_data_t* server_data, char const* argv[])
     server_data->data_socket_fd = FAILURE;
     server_data->data_mode = NO_MODE;
     create_socket(server_data);
-    memset(&server_data->server_address, 0,
-    sizeof(server_data->server_address));
-    server_data->server_address.sin_family = AF_INET;
-    server_data->server_address.sin_addr.s_addr = INADDR_ANY;
-    server_data->server_address.sin_port = htons(server_data->PORT);
+    init_server_data(server_data);
     bind_socket(server_data);
     listen_socket(server_data);
     FD_ZERO(&server_data->fds);
+    FD_ZERO(&server_data->copy_fds);
     FD_SET(server_data->server_socket_fd, &server_data->fds);
     server_data->fd_max = server_data->server_socket_fd;
     server_data->initial_path = realpath(argv[2], NULL);
     if (!server_data->initial_path)
         handle_error("realpath");
+    if (chdir(server_data->initial_path) == FAILURE)
+        handle_error("chdir");
 }
