@@ -10,10 +10,6 @@
 bool test_user_conditions(client_t* clients, char** input_command,
 int control_socket)
 {
-    if (get_size_word_array(input_command) != 2) {
-        send_resp(control_socket, FTP_REPLY_501);
-        return true;
-    }
     if (clients[control_socket - 4].is_logged == true) {
         send_resp(control_socket, FTP_REPLY_530);
         return true;
@@ -33,6 +29,10 @@ int control_socket)
 
 void user(list_args_t* args)
 {
+    if (get_size_word_array(args->input_command) != 2) {
+        send_resp(args->control_socket, FTP_REPLY_501);
+        return;
+    }
     if (test_user_conditions(args->clients, args->input_command,
     args->control_socket))
         return;

@@ -11,13 +11,8 @@ bool test_pass_conditions(client_t* clients, int control_socket, char** command)
 {
     char* input_password = get_size_word_array(command) == 2 ? command[1] : "";
 
-    if (strcmp(clients[control_socket - 4].username, ANONYMOUS_USERNAME) ||
-        clients[control_socket - 4].username[0] == '\0') {
+    if (clients[control_socket - 4].username[0] == '\0') {
         send_resp(control_socket, FTP_REPLY_503);
-        return true;
-    }
-    if (clients[control_socket - 4].is_logged == true) {
-        send_resp(control_socket, FTP_REPLY_530);
         return true;
     }
     if ((!strcmp(clients[control_socket - 4].username, ANONYMOUS_USERNAME)) &&
