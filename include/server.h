@@ -164,7 +164,7 @@ bool is_data_con_establish(int control_socket,
 server_data_t* server_data);
 
 bool is_directory_accessible(int control_socket, server_data_t *server_data,
-char *new_path);
+char *new_path, bool is_data_transfer);
 
 extern const command_t COMMANDS_DATA[];
 extern const size_t COMMANDS_DATA_SIZE;

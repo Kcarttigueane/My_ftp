@@ -33,17 +33,19 @@ void retr_cleanup(server_data_t* server_data, FILE* file, int data_socket_temp)
 
 void retr(list_args_t* args)
 {
-    if (!is_logged(args->control_socket, args->clients))
-        return;
-    if (!args->input_command[1]) {
-        send_resp(args->control_socket, FTP_REPLY_501);
+    if (!is_logged(args->control_socket, args->clients)) return;
+    if (get_size_word_array(args->input_command) != 2) {
+        send_resp(args->control_socket, FTP_REPLY_425);
         return;
     }
-    printf("input_command[1] = %s\n", args->input_command[1]);
-    FILE* file = open_file(args->input_command[1], args->control_socket,
-    "550 %s: No such file or directory.\r\n");
-    if (file == NULL)
+    char *file_path = realpath(args->input_command[1], NULL);
+    if (is_directory_accessible(args->control_socket, args->server_data,
+    file_path, true) == false) {
         return;
+    }
+    FILE* file = open_file(args->input_command[1], args->control_socket,
+    "425 %s: No such file or directory.\r\n");
+    if (file == NULL) return;
     if (!is_data_con_establish(args->control_socket, args->server_data))
         return;
     int data_socket_temp = create_temp_socket(args->server_data, args->clients);

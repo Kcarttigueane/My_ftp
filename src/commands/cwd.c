@@ -14,7 +14,7 @@ server_data_t* server_data)
 
     char* new_path = realpath(input_command[1], NULL);
 
-    if (!is_directory_accessible(control_socket, server_data, new_path))
+    if (!is_directory_accessible(control_socket, server_data, new_path, false))
         return;
 
     if (chdir(new_path) == FAILURE) {
@@ -33,8 +33,8 @@ void cwd_command(list_args_t* args)
     if (!is_logged(args->control_socket, args->clients))
         return;
 
-    if (!args->input_command[1]) {
-        send_resp(args->control_socket, FTP_REPLY_501);
+    if (get_size_word_array(args->input_command) != 2) {
+        send_resp(args->control_socket, FTP_REPLY_550);
         return;
     }
     cwd_execution(args->control_socket, args->input_command, args->clients,
