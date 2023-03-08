@@ -36,7 +36,7 @@ void stor(list_args_t* args)
     if (!is_logged(args->control_socket, args->clients))
         return;
     if (get_size_word_array(args->input_command) != 2) {
-        send_resp(args->control_socket, FTP_REPLY_425);
+        send_resp(args->control_socket, FTP_REPLY_550);
         return;
     }
     if (!is_data_con_establish(args->control_socket, args->server_data))

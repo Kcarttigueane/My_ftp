@@ -26,7 +26,7 @@ void handle_port_args(int control_socket, client_t* clients,
 server_data_t* server_data, char** port_args)
 {
     if (get_size_word_array(port_args) != 2) {
-        send_resp(control_socket, FTP_REPLY_501);
+        send_resp(control_socket, FTP_REPLY_550);
         return;
     }
     char ip[BUFFER_SIZE];
@@ -34,7 +34,7 @@ server_data_t* server_data, char** port_args)
     int format_input =
         sscanf(port_args[1], PORT_ARGS_FORMAT, ip, &port1, &port2);
     if (format_input != 3) {
-        send_resp(control_socket, FTP_REPLY_501);
+        send_resp(control_socket, FTP_REPLY_550);
         return;
     }
     server_data->data_socket_fd = port_data_socket(ip, port1, port2);

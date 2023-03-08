@@ -40,9 +40,7 @@ void list(list_args_t* args)
         ? realpath(args->input_command[1], NULL)
         : args->clients[args->control_socket - 4].current_path;
     if (is_directory_accessible(args->control_socket, args->server_data,
-        path_to_study, false) == false) {
-        return;
-    }
+        path_to_study) == false) return;
     int data_sock_temp = create_temp_socket(args->server_data, args->clients);
     dprintf(args->control_socket, FTP_REPLY_150);
     args->server_data->data_mode = NO_MODE;

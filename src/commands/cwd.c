@@ -14,7 +14,7 @@ server_data_t* server_data)
 
     char* new_path = realpath(input_command[1], NULL);
 
-    if (!is_directory_accessible(control_socket, server_data, new_path, false))
+    if (!is_directory_accessible(control_socket, server_data, new_path))
         return;
 
     if (chdir(new_path) == FAILURE) {

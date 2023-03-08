@@ -35,16 +35,16 @@ void retr(list_args_t* args)
 {
     if (!is_logged(args->control_socket, args->clients)) return;
     if (get_size_word_array(args->input_command) != 2) {
-        send_resp(args->control_socket, FTP_REPLY_425);
+        send_resp(args->control_socket, FTP_REPLY_550);
         return;
     }
     char *file_path = realpath(args->input_command[1], NULL);
     if (is_directory_accessible(args->control_socket, args->server_data,
-    file_path, true) == false) {
+    file_path) == false) {
         return;
     }
     FILE* file = open_file(args->input_command[1], args->control_socket,
-    "425 %s: No such file or directory.\r\n");
+    "550 %s: No such file or directory.\r\n");
     if (file == NULL) return;
     if (!is_data_con_establish(args->control_socket, args->server_data))
         return;
