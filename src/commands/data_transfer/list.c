@@ -7,28 +7,34 @@
 
 #include "../../../include/server.h"
 
-void list_command_display(char* path_to_study, int data_sock_temp)
+void list_clean_up(server_data_t* server_data, list_args_t* args,
+int data_sock_temp)
+{
+    dprintf(args->control_socket, FTP_REPLY_226);
+    close(data_sock_temp);
+    close(server_data->data_socket_fd);
+    server_data->data_socket_fd = FAILURE;
+}
+
+void list_command_display(char* path_to_study, list_args_t* args)
 {
     DIR* dir = opendir(path_to_study);
     struct dirent* ent;
 
     if (dir == NULL) {
-        dprintf(data_sock_temp, "550 Failed to open directory\r\n");
+        dprintf(args->control_socket, "550 Failed to open directory\r\n");
         return;
     }
+
+    int data_sock_temp = create_temp_socket(args->server_data, args->clients);
+
+    dprintf(args->control_socket, FTP_REPLY_150);
 
     while ((ent = readdir(dir)) != NULL)
         if (strlen(ent->d_name) > 2 && ent->d_name[0] != '.')
             dprintf(data_sock_temp, "%s\r\n", ent->d_name);
     closedir(dir);
-}
-
-void list_clean_up(server_data_t* server_data, int data_sock_temp)
-{
-    dprintf(data_sock_temp, FTP_REPLY_226);
-    close(data_sock_temp);
-    close(server_data->data_socket_fd);
-    server_data->data_socket_fd = FAILURE;
+    list_clean_up(args->server_data, args, data_sock_temp);
 }
 
 void list(list_args_t* args)
@@ -48,8 +54,5 @@ void list(list_args_t* args)
         args->server_data->data_socket_fd = FAILURE;
         return;
     }
-    int data_sock_temp = create_temp_socket(args->server_data, args->clients);
-    dprintf(args->control_socket, FTP_REPLY_150);
-    list_command_display(path_to_study, data_sock_temp);
-    list_clean_up(args->server_data, data_sock_temp);
+    list_command_display(path_to_study, args);
 }

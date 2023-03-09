@@ -166,6 +166,10 @@ server_data_t* server_data);
 bool is_directory_accessible(int control_socket, server_data_t *server_data,
 char *new_path);
 
+void list_clean_up(server_data_t* server_data, list_args_t* args,
+int data_sock_temp);
+
+
 extern const command_t COMMANDS_DATA[];
 extern const size_t COMMANDS_DATA_SIZE;
 
