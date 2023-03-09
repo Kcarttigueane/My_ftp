@@ -41,16 +41,15 @@ void list(list_args_t* args)
         : args->clients[args->control_socket - 4].current_path;
     if (is_directory_accessible(args->control_socket, args->server_data,
         path_to_study) == false) return;
-    int data_sock_temp = create_temp_socket(args->server_data, args->clients);
-    dprintf(args->control_socket, FTP_REPLY_150);
     args->server_data->data_mode = NO_MODE;
     if (strncmp(path_to_study, args->server_data->initial_path,
         strlen(args->server_data->initial_path)) != 0) {
         dprintf(args->control_socket, FTP_REPLY_550);
-        close(data_sock_temp);
         args->server_data->data_socket_fd = FAILURE;
         return;
     }
+    int data_sock_temp = create_temp_socket(args->server_data, args->clients);
+    dprintf(args->control_socket, FTP_REPLY_150);
     list_command_display(path_to_study, data_sock_temp);
     list_clean_up(args->server_data, data_sock_temp);
 }
