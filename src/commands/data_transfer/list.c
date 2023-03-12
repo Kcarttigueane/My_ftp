@@ -40,8 +40,6 @@ void list_command_display(char* path_to_study, list_args_t* args)
 void list(list_args_t* args)
 {
     if (!is_logged(args->control_socket, args->clients)) return;
-    if (!is_data_con_establish(args->control_socket, args->server_data))
-        return;
     char* path_to_study = (get_size_word_array(args->input_command) == 2)
         ? realpath(args->input_command[1], NULL)
         : args->clients[args->control_socket - 4].current_path;
@@ -54,5 +52,7 @@ void list(list_args_t* args)
         args->server_data->data_socket_fd = FAILURE;
         return;
     }
+    if (!is_data_con_establish(args->control_socket, args->server_data))
+        return;
     list_command_display(path_to_study, args);
 }

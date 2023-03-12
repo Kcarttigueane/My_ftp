@@ -42,7 +42,6 @@ void stor(list_args_t* args)
     if (!is_data_con_establish(args->control_socket, args->server_data))
         return;
     int data_socket_temp = create_temp_socket(args->server_data, args->clients);
-    args->server_data->data_mode = NO_MODE;
     FILE* file = fopen(args->input_command[1], "w");
     if (!file)
         return;

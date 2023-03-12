@@ -41,5 +41,6 @@ int create_temp_socket(server_data_t* server_data, client_t* clients)
         printf("passive mode called\n");
         data_sock_temp = create_temp_socket_passive(server_data);
     }
+    server_data->data_mode = NO_MODE;
     return data_sock_temp;
 }
